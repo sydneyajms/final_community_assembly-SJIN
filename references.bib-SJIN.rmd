@@ -1,0 +1,8 @@
+---
+title: "Annotated Bibliography Final Project"
+output: pdf_document
+date: "2025-10-31"
+---
+
+```{r setup, include=FALSE}
+
