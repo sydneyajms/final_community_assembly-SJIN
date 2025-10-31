@@ -1,0 +1,48 @@
+---
+title: "Annotated Bibliography Final Project"
+output: pdf_document
+date: "2025-10-31"
+bibliography: references.bib
+---
+```{r}
+#install this first
+#tinytex::install_tinytex()
+
+```
+
+@hansen_positive_nodate
+
+Johnson, C.A., Dutt, P. & Levine, J.M. (2022) Competition for pollinators destabilizes plant coexistence
+  Johnson, C.A., Dutt, P. & Levine, J.M. (2022) Competition for pollinators destabilizes plant coexistence. Nature 607, 721–725. https://doi.org/10.1038/s41586-022-04973-x
+
+This article is a detailed analysis of how different pollination scenarios impact plant species interactions, paraelleling the community assemblage aspect of our project. They found that competition between pollinators destabilized plant interactions, reduced niche differences between plant species and disrupted potential opportunities for coexistence. Hence, the article points to pollinator decline as an increasingly problematic phenomenon, as it could threaten plant diversity and favor more common plant species as well as create unequal competitive advantages. The analysis in this article is very thourugh and the informtion on niche differences will be very helpful when understanding the underpinnings of biodiversity differences in our data. This article will thus be critical in evaluating the broader implications of our analysis, and how to interpret the results through a restoration lens. 
+
+Moeller, D.A. (2005), Pollinator community structure and sources of spatial variation in plant–pollinator interactions in Clarkia xantiana ssp. xantiana
+  Moeller, D.A. (2005), Pollinator community structure and sources of spatial variation in plant–pollinator interactions in Clarkia xantiana ssp. xantiana. Oecologia 142, 28–37. https://doi.org/10.1007/s00442-004-1693-1 
+
+This article analyses how an abundance of Clarkia specialist pollinators, is strongly affected local plant community assemblages. The research findings indicate higher abundance of specialists pollintors, yet greater biodiversity in generalist pollinators, meanwhile discussing the reproductiove success of the Clarkia as a measureable output of pollinator effectiveness. Moreover, the article notes the increased probability of generalist pollinators carrying foreign pollen within plants insdide a community, leading to less reproductive success. One limitation of this research is the absence of species spceific information on which pllinators are Clarkia speciallists. In turn, this will push us to conduct more research on which pollinator species are specialists for Clarkia or are commonly found on these flowers. This article will be very beneficial in our data analysis because it directly relates to the plants we are using seed data from. 
+
+Ponisio, L.C., et. al. (2016), On-farm habitat restoration counters biotic homogenization in intensively managed agriculture
+  Ponisio, L.C., et. al. (2016), On-farm habitat restoration counters biotic homogenization in intensively managed agriculture. Global Change Biology, 22: 704-715. https://doi.org/10.1111/gcb.13117
+
+This article examines the impact that hedgerow maturity has on spatial heterogeneity, beta diversity and visitation in pollinator communities in intensively managed agriculture. The findings indicate that mature hedgerows promote the highest pollinator trait diversity which can create more complex and varied pollinator ecosystems. The research also suggests that hedgerows can also support more specialized and phenotypically diverse pollinator communities, where species replacement rather than loss or gain drives spatial heterogeneity. One limitation to utilising the finsings of this article, is that hedgrow maturity as an indfependent variable is very different to using different community assemblages. The research in this study was conducted over many years, and therefore enabled pollinator populatins to establish themselves nearby, unlike the short term nature of the data we are using for this project. However, the assesment of specialistion and B diversity will be very helpful, as both can be observed and measured in our project data, using the methods and formulas outlined in this study. 
+
+Rietkerk, M. & van de Koppel, J. (2008) Regular pattern formation in real ecosystems
+  Rietkerk, M. & van de Koppel, J. (2008) Regular pattern formation in real ecosystems. Trends Ecol. Evolut. 23, 169–175 https://doi.org/10.1016/j.tree.2007.10.013 
+
+This article explores how large-scale ordered spatial patterns emerge from local plant-pollinator interactions, while focusing on the feedback mechanisms that underpin these relationships. The research found regaular spatial patterns in multiple ecosystems, where patterns emerged through long-distance negative feedback, and short distance positive feedback interactions. They suggest that self-organization in this manner is a universal ecological phenomenon and provides insight into the resilience and resource management of an ecosystem. While none of the examined ecosystems was a wetland praire (the ecosystem this project is using data from), the ecological concepts of long-distance negative feedback, and short-distance posiutive feedback, can still be applied to help our general analysis of the illustrated feedback mechanisms we find in the differnt community assemblages. The concepts on feedback at short and long distances will be important when considering the implications of the pollinator network. 
+
+Sargent, R.D., Ackerly, D.D. (2008) Plant–pollinator interactions and the assembly of plant communities
+  Sargent, R.D., Ackerly, D.D. (2008) Plant–pollinator interactions and the assembly of plant communities. Trends Ecol. Evolut. 23, 3, 123-130. https://doi.org/10.1016/j.tree.2007.11.003
+  
+This article notes previus knowlege that plant neighbourhoods may increase visitation levels of shared pollinators, however more understanding about fitness changes in response to pollinator identity and visitation rates in particular locations. Additionally, it introduces the concept of habitat filtering, where the enviornment acts as a filter, and predicts that communities that share simmilar traits result. The article explains how local pollinator community can also operate as a habitat filter if absence of a particular pollinator prevents the establishment of a plant species in a community. Thus, the findings in this article will be beneficial to helping analyse the data, where we can determine the most benefical plant community assemblages based on the premise that plants should benefit from living in close proximity to other plants that attract the same pollinators. The article is limiting in that it does not provide an adequate way to asses or measure pollinator overlap, but instead just illustrates the research results found due to said overlap. 
+
+Slingsby, J.A. and Verboom, G.A. (2006) Phylogenetic relatedness limits co-occurrence at fine spatial scales: evidence from the Schoenoid Sedges (Cyperaceae: Schoeneae) of the Cape Floristic Region, South Africa  
+  Slingsby, J.A. and Verboom, G.A. (2006) Phylogenetic relatedness limits co-occurrence at fine spatial scales: evidence from the Schoenoid Sedges (Cyperaceae: Schoeneae) of the Cape Floristic Region, South Africa. Am. Nat. 168, 14–27. https://doi.org/10.2307/3844672 
+
+Examined how phylogenetic relationships influence niche species co-existence at fine spatial scales. Found that species that co-existed were more phylogenetically distanct than expected by chance, however the pattern weekend when analyzing broader phylogenetic scales. Co-occurring species demonstrated greater functional trait divergence. They suggest that complex interactions between evolutionary history and ecological processes explain these results, indicating that closer related species can co-exist through functional differentiation.  This source will be useful to help inform a hypothesis that considers species relateness to the assembly of a pollinator network. Its anaylsis of functional trait divergence may be too detailed and irrelevent for this particular study and thus is limiting in this way, however understanding the general context of species co-exitance from a phylogenetic perspective is relevant. Ultimately, this research may help inform which species data we choose to examine from the Oregon Bee Atlas, or other relevant sources, as analysisng phylogenetically similar species may impact the success of plant communities indirectly. 
+
+
+
+
+
