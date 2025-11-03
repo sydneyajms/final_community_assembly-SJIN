@@ -1,0 +1,30 @@
+---
+title: "Final_ProjectID-SJIN"
+output: html_document
+---
+
+## Final project topic selection (first final project assignment)
+Final project topic selection (first final project
+assignment)
+We will be building toward the final project throughout the class. At this stage we need enough
+information from you to ensure your project is do-able during the timespan of a quarter. A full project
+proposal, with questions and identified data sources, will be due later in the quarter. For now, please
+submit a knitted .Rmd file saved as “LASTNAME_ProjectTopic.pdf”. Include the following:
+1. General topic of interest in relation to the Oregon Bee Atlas data (e.g., patterns of diversity,
+bee diets, sampling bias)
+Pollinator networks
+2. Potential questions within that topic area How does pollinator biodiversity impact plant
+fitness of clarkia Which community assemblages lead to the greatest pollinator biodiversity?
+How does the adundance of effective pollinators impact reproductive success of clarkia?
+3. Potential additional datasets within that topic area (e.g.,specify relevant government
+databases, academic data repositories, etc) Oregon Bee Atlas Ponisio Lab? Forest Service
+USGS?
+4. The name of your partner (if undergrads)
+If you do have your own data (graduate students, thesis undergrads):
+1) The questions you would like to answer with your data
+How does community assembly impact the pollinator biodiversity and seed set of Clarkia?
+Which community assemblages promote the most biodiversity and abundance of effective pollinators?
+2) The structure and metadata of the dataset I am unsure of this.
+3) Potential additional datasets within that topic area Oregon Bee Atlas
+I will be using Jasmine Albert’s data from the Holiday Farm Fire collection in 2023, coupled with the
+pollinator data from the Ponisio Lab.
