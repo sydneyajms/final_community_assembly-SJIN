@@ -27,4 +27,4 @@ Which community assemblages promote the most biodiversity and abundance of effec
 2) The structure and metadata of the dataset I am unsure of this.
 3) Potential additional datasets within that topic area Oregon Bee Atlas
 I will be using Jasmine Albert’s data from the Holiday Farm Fire collection in 2023, coupled with the
-pollinator data from the Ponisio Lab.
+pollinator data from the Ponisio Lab. IN
