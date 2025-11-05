@@ -7,6 +7,8 @@ output: html_document
 Final project topic selection (first final project
 assignment)
 
+
+
 We will be building toward the final project throughout the class. At this stage we need enough
 information from you to ensure your project is do-able during the timespan of a quarter. A full project
 proposal, with questions and identified data sources, will be due later in the quarter. For now, please
