@@ -1,0 +1,20 @@
+---
+title: "proposed_workflow"
+output: html_document
+date: "2025-11-05"
+---
+A proposed work flow for our final project may look like this:
+
+Sydney:
+1. git pull to get the latest work from the git hub repository 
+2. Edit files.
+3. git add to stage changes.
+4. git commit -m "message" to record changes locally including a detailed but short message about the changes made
+5. git push to share with Isa every 20/30 minutes that changes are made.
+
+Isa
+1. git pull to get the latest work from the git hub repository 
+2. Edit files.
+3. git add to stage changes.
+4. git commit -m "message" to record changes locally including a detailed but short message about the changes made
+5. git push to share with Sydney every 20/30 minutes that changes are made.
