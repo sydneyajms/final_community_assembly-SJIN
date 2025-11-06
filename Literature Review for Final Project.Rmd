@@ -15,10 +15,11 @@ output: html_document
 …
 
 ### Paragraph 2–3 — Past work & data landscape (who/where/how; gaps)
-…
+Existing literature in the field of community assembly has focused on how direct interactions among plants (e.g. competition for resources) and abiotic factors (e.g. soil moisture) influence the persistence of plants in a particular habitat (@Sargent). Moreover, studies predicting how community characteristics such as niche overlaps, trait divergence and distribution, and phylogenetics influence patterns of species co-occurrence and persistence within a community are not uncommon (@Ponisio, @Sargent). However, research on plant communities has little consideration for the role of plant-animal interactions in the greater community context, particularly that of the local pollinator networks as a potential habitat filter, and rather tends to narrowly focus on the scale of direct plant-animal interactions. (@Sargent)
 
 ### Paragraph 4 — Purpose & why now
-…
+
+Wetland prairies are a critical part of the Oregon ecosystem. Wetland prairies are biodiversity hotspots that improveing water quality, recharge groundwater, reduce flood severity, and support breeding and migrating wildlife. However, almost all remaining Willamette Valley prairies have been degraded by human pollution, invasive species, and altered water regimes. Thus, the need for restoration is unquestionably important, and critically, towards the role of pollinators in supporting these enabling plant reproduction is crucial.
 
 ### Paragraph 5 — Hypotheses (directional) & brief rationale
 - H1: … (I predict … because …)
