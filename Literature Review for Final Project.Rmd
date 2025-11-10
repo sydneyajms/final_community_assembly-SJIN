@@ -23,8 +23,14 @@ Existing literature in the field of community assembly has focused on how direct
 Wetland prairies are a critical part of the Oregon ecosystem. Wetland prairies are biodiversity hotspots that improveing water quality, recharge groundwater, reduce flood severity, and support breeding and migrating wildlife. However, almost all remaining Willamette Valley prairies have been degraded by human pollution, invasive species, and altered water regimes. Thus, the need for restoration is unquestionably important, and critically, towards the role of pollinators in supporting these enabling plant reproduction is crucial.
 
 ### Paragraph 5 — Hypotheses (directional) & brief rationale
-- H1: … (I predict … because …)
-- H2: …
+Understanding research done by @Moeller(and others) on the degree of specialisation in pollinator communities visiting Clarkia plants across a wide geographic range is fundamental to the formation of our hypothesis. Building upon the understanding that the difference in pollinator communities between plant communities is due to the proportion of specialists versus generalists, rather than diversity, we form our first hypothesis:
+
+We predict that Clarkia reproductive success will be greater in communities with less floral overlap and a more specialized pollinator community structure, due to reduced pollen interference and resource competition.
+
+Conversely, we predict that communities with more congeners to Clarkia will attract greater overall abundance of pollinators, however reproductive success and pollinator biodiversity will be lower. 
+
+Therefore, the optimal, most nested plant assemblage for restoration will feature limited plant overlap but high pollinator sharing.
+
 
 ## Dataset identification
 - Dataset A (URL/DOI): collector, methods, columns/units …
