@@ -5,9 +5,6 @@ date: "2025-10-31"
 bibliography: references.bib
 ---
 ```{r}
-#install this first
-#tinytex::install_tinytex()
-
 ```
 
 @bell_interspecific_2005
