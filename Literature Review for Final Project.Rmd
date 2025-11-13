@@ -7,7 +7,7 @@ output: html_document
 
 Effective pollinators in community assembly.
 
-Which community assemblages promote the most biodiversity and abundance of effective pollinators? - What community assemblages result in the greatest amount of nestdedness? (not sure if this addition is too much for the term project?)
+What community assemblages result in the greatest amount of nestdedness? (not sure if this addition is too much for the term project?)
 Sydney James, Isabelle Nollette
 
 ## Literature review (~5 paragraphs)
