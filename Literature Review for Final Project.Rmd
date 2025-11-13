@@ -15,6 +15,7 @@ Sydney James, Isabelle Nollette
 ### Paragraph 1 — Problem & significance (big‑picture reviews)
 - Understanding the most positive indirect interactions among plant species may promote population persistence and species coexistence by enhancing individual reproductive success.
 - The diversity and structure of pollinator communities can have important influences on floral evolution and reproductive interactions among plant species.
+Typically, plant-pollinator communties are structured in a way that is considered nested, which is the structure for high resilience, yet this is not necessarily;y the most productive structure.
 
 ### Paragraph 2–3 — Past work & data landscape (who/where/how; gaps)
 Existing literature in the field of community assembly has focused on how direct interactions among plants (e.g. competition for resources) and abiotic factors (e.g. soil moisture) influence their persistence in a particular habitat (@Sargent). Moreover, studies predicting how community and species characteristics such as niche overlaps, specialisation, trait divergence and distribution, and phylogenetics influence patterns of species co-occurrence and persistence within a community are not uncommon (@Moeller, @Ponisio, @Sargent, @Slingsby, J.A.). However, this research has little consideration for the role of plant-animal interactions in the greater community context, particularly that of the local pollinator networks as a potential habitat filter and driver of plant fitness. Instead, focus is often towards the scale of direct plant-animal interactions. 
