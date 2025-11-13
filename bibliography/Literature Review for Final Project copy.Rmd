@@ -4,19 +4,20 @@ author: "Isabelle Nollette, Sydney James"
 date: "2025-11-05"
 output: html_document
 bibliography: references.bib
+link-citation: true
 ---
 ```{r}
 ```
 
 Effective pollinators in community assembly.
 
-What community assemblages result in the greatest amount of nestdedness? (not sure if this addition is too much for the term project?)
+What community assemblages result in the greatest amount of nestedness and how does this impact reproductive success?
 Sydney James, Isabelle Nollette
 
 ## Literature review (~5 paragraphs)
 
 ### Paragraph 1 — Problem & significance (big‑picture reviews)
-We understand that plant-pollinator interactions are a key driver of community assembly and species establishment in any ecosystem. Thus, knowing which of these interactions will promote positive species coexistence by enhancing reproductive success is critical to ensuring population persistence in the face of an ever-changing environment (Moeller). 
+We understand that plant-pollinator interactions are a key driver of community assembly and species establishment in any ecosystem. Thus, knowing which of these interactions will promote positive species coexistence by enhancing reproductive success is critical to ensuring population persistence in the face of an ever-changing environment (@moeller) . 
 The dynamics of these plant-pollinator interactions have been explored as a driver of species richness (@Memtsas), where the objective is often community resilience to an external stressor. Such reliance is usually related to the structure of specialists and generalists of both plants and pollinators within a community. Abundance of generalist pollinators is often high (Moeller) and advances the transfer of pollen between plants; however, some degree of specialisation is necessary for successful pollination for flowers requiring conspecific pollen (Brosi). This structure is usually defined as the level of nestedness - the tendency for specialists to interact with subsets of the species that generalists interact with. It is thought that a perfectly nested community is the most resilient (Brosi). 
 Highly specialised systems like the fiscus trees and their wasp pollinators experience a trade-off between high reproductive success and low resilience, therefore experiencing a low level of nestedness. (Shanahan). 
 Thus, our analysis will investigate reproductive success as an output of nestedness to grow an understanding of how the trade-off between resilience and reproductive success can promote community population persistence in different community assemblies. 
