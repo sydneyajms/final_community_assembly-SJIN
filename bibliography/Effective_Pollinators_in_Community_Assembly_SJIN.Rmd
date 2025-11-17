@@ -1,0 +1,34 @@
+---
+title: "Effective Pollinators in Community Assembly_SJIN"
+author: "Isabelle Nollette, Sydney James"
+date: "2025-11-17"
+bibliography: references.bib
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+```
+
+Data:
+```{r}
+
+```
+
+Data wrangling, summarizing, and exploring:
+```{r}
+```
+
+Hypothesis test:
+```{r}
+```
+
+Visualization:
+```{r}
+```
+
+Additional Tool Analysis (1pt EC)
+```{r}
+```
+
+
