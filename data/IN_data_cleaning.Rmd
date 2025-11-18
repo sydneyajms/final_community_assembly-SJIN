@@ -4,5 +4,27 @@ author: "Isabelle Nollette, Sydney James"
 date: "2025-11-18"
 output: html_document
 ---
+
+GLTC MADGRA cleaning:
 ```{r}
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+
+Holiday_data <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.xlsx")
+GLTC_MADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCMADGRA.csv")
+
+GLTC_MADGRA <- GLTC_MADGRA[, -c(1, 21, 22, 23) ]
+colnames(GLTC_MADGRA) <- GLTC_MADGRA[1, ]
+GLTC_MADGRA <- GLTC_MADGRA[-c(1, 2), ]
+
+GLTC_MADGRA <- GLTC_MADGRA %>%
+  rename("Stand" = St, 
+          "Seed Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)          #making the headers correct
+
+  
+head(GLTC_MADGRA)
+
 ```
