@@ -10,21 +10,138 @@ GLTC MADGRA cleaning:
 library(dplyr)
 library(tidyr)
 library(tidyverse)
+library(terra)
+```
 
+```{r}
 Holiday_data <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.xlsx")
 GLTC_MADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCMADGRA.csv")
 
-GLTC_MADGRA <- GLTC_MADGRA[, -c(1, 21, 22, 23) ]
-colnames(GLTC_MADGRA) <- GLTC_MADGRA[1, ]
-GLTC_MADGRA <- GLTC_MADGRA[-c(1, 2), ]
+colnames(GLTC_MADGRA) <- GLTC_MADGRA[1, ]               #name columns row 1
+GLTC_MADGRA <- GLTC_MADGRA[-1, ]                  #remove first row
+GLTC_MADGRA <- subset(GLTC_MADGRA, 
+                      select = -c(S, lostSeeds.O, Oflorets, lostSeeds.C, Cflorets, notesOpen, notesClosed, notesOther))        #remove unuseful columns
+
+
+GLTC_MADGRA <- subset(GLTC_MADGRA, M != 0)       #removing mono plots
 
 GLTC_MADGRA <- GLTC_MADGRA %>%
   rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)   #making the headers correct
+
+#GLTC_MADGRA <- GLTC_MADGRA %>%              #adding seeds per bloom column
+#  mutate(OseedsGood = as.numeric(OseedsGood),
+#         Oblooms = as.numeric(Oblooms),
+#         Seeds_Per_Bloom = OseedsGood/Oblooms)
+
+#GLTC_MADGRA <- GLTC_MADGRA %>%          #dropped NAs
+#  drop_na(OseedsGood, Oblooms) 
+```
+
+WWCLAAMO cleaning: 
+```{r}
+WWCLAAMO <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCLAAMO.csv")
+
+colnames(WWCLAAMO) <- WWCLAAMO[1, ]               #name columns row 1
+WWCLAAMO <- WWCLAAMO[-1, ]                        #remove first row
+WWCLAAMO <- subset(WWCLAAMO, 
+                      select = -c(S, notesOpen, notesClosed))
+
+WWCLAAMO <- subset(WWCLAAMO, M != 0)       #removing mono plots
+
+WWCLAAMO <- WWCLAAMO %>%
+  rename("Stand" = St, 
           "Seed Mix" = M,
           "Treatment" = genSpec,
-          "PlantGenusSpecies" = Sp)          #making the headers correct
+          "PlantGenusSpecies" = Sp)    #making the headers correct
 
-  
-head(GLTC_MADGRA)
+#WWCLAAMO <- WWCLAAMO %>%              #adding seeds per bloom column
+#  mutate(OseedsGood = as.numeric(OseedsGood),
+#         Oblooms = as.numeric(Oblooms),
+#         Seeds_Per_Bloom = OseedsGood/Oblooms)
 
+#WWCLAAMO <- WWCLAAMO %>%          #dropped NAs
+#  drop_na(OseedsGood, Oblooms) 
+```
+
+
+WWCLAPUR cleaning: 
+```{r}
+WWCLAPUR <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCLAPUR.csv")
+
+colnames(WWCLAPUR) <- WWCLAPUR[1, ]               #name columns row 1
+WWCLAPUR <- WWCLAPUR[-1, ]                  #remove first row
+WWCLAPUR <- subset(WWCLAPUR, 
+                      select = -c(S, notes, notesClosed))        #remove unuseful columns
+
+WWCLAPUR <- subset(WWCLAPUR, M != 0)       #removing mono plots
+
+WWCLAPUR <- WWCLAPUR %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)   #making the headers correct
+
+#WWCLAPUR <- WWCLAPUR %>%              #adding seeds per bloom column
+#  mutate(OseedsGood = as.numeric(OseedsGood),
+#         Oblooms = as.numeric(Oblooms),
+#         Seeds_Per_Bloom = OseedsGood/Oblooms)
+
+#WWCLAPUR <- WWCLAPUR %>%          #dropped NAs
+#  drop_na(OseedsGood, Oblooms) 
+```
+
+
+WWCOLLIGRA cleaning: 
+```{r}
+WWCOLLIGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCOLLIGRA.csv")
+
+colnames(WWCOLLIGRA) <- WWCOLLIGRA[1, ]               #name columns row 1
+WWCOLLIGRA <- WWCOLLIGRA[-1, ]                  #remove first row
+WWCOLLIGRA <- subset(WWCOLLIGRA, 
+                      select = -c(S, notesOpen, notesClosed, 19,20,21,22,23,24))        #remove unuseful columns
+
+WWCOLLIGRA <- subset(WWCOLLIGRA, M != 0)       #removing mono plots
+
+WWCOLLIGRA <- WWCOLLIGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)   #making the headers correct
+
+#WWCOLLIGRA <- WWCOLLIGRA %>%              #adding seeds per bloom column
+#  mutate(OseedsGood = as.numeric(OseedsGood),
+#         Oblooms = as.numeric(Oblooms),
+#         Seeds_Per_Bloom = OseedsGood/Oblooms)
+
+#WWCOLLIGRA <- WWCOLLIGRA %>%          #dropped NAs
+#  drop_na(OseedsGood, Oblooms) 
+```
+
+WWMADGRA
+```{r}
+WWMADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWMADGRA.csv")
+
+colnames(WWMADGRA) <- WWMADGRA[1, ]               #name columns row 1
+WWMADGRA <- WWMADGRA[-1, ]                  #remove first row
+WWMADGRA <- subset(WWMADGRA, 
+                      select = -c(S, lostSeeds.O, Oflorets, lostSeeds.C, Cflorets, notesOpen, notesClosed, notesOther))        #remove unuseful columns
+
+WWMADGRA <- subset(WWMADGRA, M != 0)       #removing mono plots
+
+WWMADGRA <- WWMADGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)   #making the headers correct
+
+#WWMADGRA <- WWMADGRA %>%              #adding seeds per bloom column
+#  mutate(OseedsGood = as.numeric(OseedsGood),
+#         Oblooms = as.numeric(Oblooms),
+#         Seeds_Per_Bloom = OseedsGood/Oblooms)
+
+#WWMADGRA <- WWMADGRA %>%          #dropped NAs
+#  drop_na(OseedsGood, Oblooms) 
 ```
