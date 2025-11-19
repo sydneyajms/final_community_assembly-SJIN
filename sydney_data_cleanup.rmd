@@ -82,34 +82,67 @@ Clean up GLTCCLAAMO - Need mass
 ```{r}
 GLTC_CLAAMO1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCLAAMO.csv")
 
+## turn any blooms = 0 into NAs 
+GLTC_CLAAMO1$Oblooms[GLTC_CLAAMO1$Oblooms == 0] <- NA
+GLTC_CLAAMO1$Cblooms[GLTC_CLAAMO1$Cblooms == 0] <- NA
  ## initial drop any NA blooms 
 GLTC_CLAAMO1 <- GLTC_CLAAMO1 %>%
   drop_na(Oblooms, Cblooms)
-
-##Linerar regression for seed mass:
-
 ## remove mono plots 
 GLTC_CLAAMO1 <- subset(GLTC_CLAAMO1, M != 0)
 
-## remove unuseful columns
-GLTC_CLAAMO <- subset(GLTC_CLAAMO1, select = -c(S, Herbivory, OflwrsGood, OflwrsBad, OseedsGood, Herbivory.1, CflwrsGood, CflwrsBad, CseedsBad, notesOpen, notesClosed, Opods, Cpods, X))
- 
-## remove mono plots 
-GLTC_CLAAMO <- subset(GLTC_CLAAMO, M != 0)
+GLTC_CLAAMO1 <- cbind(GLTC_CLAAMO1, row = 1:nrow(GLTC_CLAAMO1))
 
-## turn any blooms = 0 into NAs 
-GLTC_CLAAMO$Oblooms[GLTC_CLAAMO$Oblooms == 0] <- NA
-GLTC_CLAAMO$Cblooms[GLTC_CLAAMO$Cblooms == 0] <- NA
+##Linerar regression for Open seed mass:
+## subset for data rows that have both total seeds and mass:
+OSeed_mass <- subset(GLTC_CLAAMO1, OseedsTotal !=0 & Omass != 0)
+## linear reg:
+model <- lm(OSeed_mass$OseedsTotal~OSeed_mass$Omass)
+b <- model$coefficients[1]
+m <- model$coefficients[2]
+
+##subset data to get rows that have mass but dont have seeds
+OnoSeeds_yesMass <- subset(GLTC_CLAAMO1, OseedsTotal == 0 | is.na(OseedsTotal) & Omass != 0)
+
+## get the mass column for the regression
+x <- OnoSeeds_yesMass$Omass
+y <- m*x+b
+
+##fill in empty rows 
+OnoSeeds_yesMass$OseedsTotal <- y 
+
+##Linerar regression for Open seed mass:
+## subset for data rows that have both total seeds and mass:
+CSeed_mass <- subset(GLTC_CLAAMO1, CseedsTotal !=0 & Cmass != 0)
+
+## linear reg:
+model <- lm(CSeed_mass$CseedsTotal~CSeed_mass$Cmass)
+Cb <- model$coefficients[1]
+Cm <- model$coefficients[2]
+
+##subset data to get rows that have mass but dont have seeds
+CnoSeeds_yesMass <- subset(GLTC_CLAAMO1, CseedsTotal == 0 | is.na(CseedsTotal) & Cmass != 0)
+## get the mass column for the regression
+Cx <- CnoSeeds_yesMass$Cmass
+Cy <- Cm*Cx+Cb
+
+##fill in empty rows
+CnoSeeds_yesMass$CseedsTotal <- Cy
+
+##MAKE A FOR LOOP
 
 ## remove any NAs 
 GLTC_CLAAMO <- GLTC_CLAAMO %>%
-  drop_na(OseedsGood, Oblooms, Cseeds, OseedsBad)
-
+  drop_na(OseedsTotal, CseedsTotal)
 
 ## find seeds per bloom and add column 
 GLTC_CLAAMO <- GLTC_CLAAMO %>%
   mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
   mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
+
+## remove unuseful columns
+GLTC_CLAAMO <- subset(GLTC_CLAAMO, select = -c(S, OseedsGood, Oblooms, OseedsBad, Cblooms, CseedsGood, CseedsBad, Omass, Cmass, notesOpen, notesClosed))
+
 
 
 ```
@@ -118,6 +151,65 @@ clean up GLTCCLAPUR - Need Mass
 
 ```{r}
 GLTCCLAPUR1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCLAPUR.csv")
+
+## turn any blooms = 0 into NAs 
+GLTCCLAPUR1$Oblooms[GLTCCLAPUR1$Oblooms == 0] <- NA
+GLTCCLAPUR1$Cblooms[GLTCCLAPUR1$Cblooms == 0] <- NA
+ ## initial drop any NA blooms 
+GLTCCLAPUR1 <- GLTCCLAPUR1 %>%
+  drop_na(Oblooms, Cblooms)
+## remove mono plots 
+GLTCCLAPUR1 <- subset(GLTCCLAPUR1, M != 0)
+
+##Linerar regression for Open seed mass:
+## subset for data rows that have both total seeds and mass:
+OSeed_mass <- subset(GLTCCLAPUR1, OseedsTotal !=0 & Omass != 0)
+## linear reg:
+model <- lm(OSeed_mass$OseedsTotal~OSeed_mass$Omass)
+b <- model$coefficients[1]
+m <- model$coefficients[2]
+
+##subset data to get rows that have mass but dont have seeds
+OnoSeeds_yesMass <- subset(GLTCCLAPUR1, OseedsTotal == 0 | is.na(OseedsTotal) & Omass != 0)
+
+## get the mass column for the regression
+x <- OnoSeeds_yesMass$Omass
+y <- m*x+b
+
+##fill in empty rows 
+OnoSeeds_yesMass$OseedsTotal <- y 
+
+##Linerar regression for Cpen seed mass:
+## subset for data rows that have both total seeds and mass:
+CSeed_mass <- subset(GLTCCLAPUR1, CseedsTotal !=0 & Cmass != 0)
+
+## linear reg:
+model <- lm(CSeed_mass$CseedsTotal~CSeed_mass$Cmass)
+Cb <- model$coefficients[1]
+Cm <- model$coefficients[2]
+
+##subset data to get rows that have mass but dont have seeds
+CnoSeeds_yesMass <- subset(GLTCCLAPUR1, CseedsTotal == 0 | is.na(CseedsTotal) & Cmass != 0)
+## get the mass column for the regression
+Cx <- CnoSeeds_yesMass$Cmass
+Cy <- Cm*Cx+Cb
+
+##fill in empty rows
+CnoSeeds_yesMass$OseedsTotal <- Cy
+
+## MAKE FOR LOOP
+
+## remove any NAs 
+GLTCCLAPUR <- GLTCCLAPUR %>%
+  drop_na(OseedsTotal, CseedsTotal)
+
+## find seeds per bloom and add column 
+GLTCCLAPUR <- GLTCCLAPUR %>%
+  mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
+
+## remove unuseful columns
+GLTCCLAPUR <- subset(GLTCCLAPUR, select = -c(S, OseedsGood, Oblooms, OseedsBad, Cblooms, CseedsGood, CseedsBad, Omass, Cmass, notesOpen, notesClosed))
 ```
 
 GLTCCOLLIGRA (DONE)
