@@ -1,0 +1,155 @@
+---
+title: "Sydney_data_cleanup"
+output: html_document
+date: "2025-11-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
+```
+
+Clean up MICGRA (DONE)
+
+```{r cars}
+## Read in CSV file
+MICGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/ MICGRA.csv")
+
+## remove unuseful columns
+MICGRA <- subset(MICGRA1, select = -c(S, Herbivory, X, Herbivory.1, X.1, ONotes, CNotes, Opods, Cpods))
+ 
+## remove mono plots 
+MICGRA <- subset(MICGRA, M != 0)
+
+## turn any blooms = 0 into NAs 
+MICGRA$Oblooms[MICGRA$Oblooms == 0] <- NA
+MICGRA$Cblooms[MICGRA$Cblooms == 0] <- NA
+
+## remove any NAs 
+MICGRA <- MICGRA %>%
+  drop_na(Oseeds, Oblooms, Cseeds, Cblooms)
+
+## find seeds per bloom and add column 
+MICGRA <- MICGRA %>%
+  mutate(OSeeds_Per_bloom = round(Oseeds/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(Cseeds/Cblooms, digits = 2))
+
+## rename columns to match pollinator data
+MICGRA <- MICGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)  
+
+```
+
+Clean up GILCAP (DONE)
+
+```{r}
+GILCAP1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GILCAP.csv")
+
+## remove unuseful columns
+GILCAP <- subset(GILCAP1, select = -c(S, Herbivory, OflwrsGood, OflwrsBad, OseedsBad, OseedsGood, Omass, Herbivory.1, CflwrsGood, CflwrsBad, CseedsBad, CseedsGood, Cmass, notesOpen, notesClosed, Opods, Cpods, X))
+ 
+## remove mono plots 
+GILCAP <- subset(GILCAP, M != 0)
+
+## turn any blooms = 0 into NAs 
+GILCAP$Oblooms[GILCAP$Oblooms == 0] <- NA
+GILCAP$Cblooms[GILCAP$Cblooms == 0] <- NA
+
+## remove any NAs 
+GILCAP <- GILCAP %>%
+  drop_na(OseedsTotal, Oblooms, CseedsTotal, Cblooms)
+
+## find seeds per bloom and add column 
+GILCAP <- GILCAP %>%
+  mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
+
+## rename columns to match pollinator data
+GILCAP <- GILCAP %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)  
+
+```
+
+Clean up GLTCCLAAMO - Need mass
+
+```{r}
+GLTC_CLAAMO1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCLAAMO.csv")
+
+ ## initial drop any NA blooms 
+GLTC_CLAAMO1 <- GLTC_CLAAMO1 %>%
+  drop_na(Oblooms, Cblooms)
+
+##Linerar regression for seed mass:
+
+## remove mono plots 
+GLTC_CLAAMO1 <- subset(GLTC_CLAAMO1, M != 0)
+
+## remove unuseful columns
+GLTC_CLAAMO <- subset(GLTC_CLAAMO1, select = -c(S, Herbivory, OflwrsGood, OflwrsBad, OseedsGood, Herbivory.1, CflwrsGood, CflwrsBad, CseedsBad, notesOpen, notesClosed, Opods, Cpods, X))
+ 
+## remove mono plots 
+GLTC_CLAAMO <- subset(GLTC_CLAAMO, M != 0)
+
+## turn any blooms = 0 into NAs 
+GLTC_CLAAMO$Oblooms[GLTC_CLAAMO$Oblooms == 0] <- NA
+GLTC_CLAAMO$Cblooms[GLTC_CLAAMO$Cblooms == 0] <- NA
+
+## remove any NAs 
+GLTC_CLAAMO <- GLTC_CLAAMO %>%
+  drop_na(OseedsGood, Oblooms, Cseeds, OseedsBad)
+
+
+## find seeds per bloom and add column 
+GLTC_CLAAMO <- GLTC_CLAAMO %>%
+  mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
+
+
+```
+
+clean up GLTCCLAPUR - Need Mass
+
+```{r}
+GLTCCLAPUR1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCLAPUR.csv")
+```
+
+GLTCCOLLIGRA (DONE)
+
+```{r}
+GLTCCOLLIGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+
+## remove unuseful columns
+GLTCCOLLIGRA <- subset(GLTCCOLLIGRA1, select = -c(S, OseedsGood, OseedsBad, Ocomplete., OemptyInflorMass, CseedsGood, CseedsBad, Ccomplete., CemptyInflorMass, notesOpen, notesClosed, X, X.1, X.2, X.3, X.4, X.5))
+ 
+## remove mono plots 
+GLTCCOLLIGRA <- subset(GLTCCOLLIGRA, M != 0)
+
+## turn any blooms = 0 into NAs 
+GLTCCOLLIGRA$Oblooms[GLTCCOLLIGRA$Oblooms == 0] <- NA
+GLTCCOLLIGRA$Cblooms[GLTCCOLLIGRA$Cblooms == 0] <- NA
+
+## remove any NAs 
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  drop_na(OseedsTotal, Oblooms, CseedsTotal, Cblooms)
+
+## find seeds per bloom and add column 
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
+
+## rename columns to match pollinator data
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)  
+
+```
+
