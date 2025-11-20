@@ -111,7 +111,7 @@ Oy <- Om*Ox+Ob
 ##fill in empty rows 
 OnoSeeds_yesMass$OseedsTotal <- Oy 
 
-##Linerar regression for Open seed mass:
+##Linerar regression for Closed seed mass:
 ## subset for data rows that have both total seeds and mass:
 CSeed_mass <- subset(GLTC_CLAAMO, CseedsTotal !=0 & Cmass != 0)
 
@@ -130,7 +130,7 @@ Cy <- Cm*Cx+Cb
 CnoSeeds_yesMass$CseedsTotal <- Cy
 
 ##MAKE A FOR LOOP
-CnoSeeds_yesMass$CSeeds <- Cy
+CnoSeeds_yesMass$CseedsTotal <- Cy
 Final_GLTC_CLAAMO <- GLTC_CLAAMO
 CnoSeeds_yesMass.small <- CnoSeeds_yesMass %>% select(Cmass, CseedsTotal)
 OnoSeeds_yesMass.small <- OnoSeeds_yesMass %>% select(Omass, OseedsTotal)
@@ -172,28 +172,30 @@ GLTCCLAPUR1 <- GLTCCLAPUR1 %>%
   drop_na(Oblooms, Cblooms)
 ## remove mono plots 
 GLTCCLAPUR1 <- subset(GLTCCLAPUR1, M != 0)
+## remove unuseful columns
+GLTCCLAPUR <- subset(GLTCCLAPUR1, select = -c(S, OseedsGood, OseedsBad, CseedsGood, CseedsBad, notesOpen, notesClosed, X))
 
 ##Linerar regression for Open seed mass:
 ## subset for data rows that have both total seeds and mass:
-OSeed_mass <- subset(GLTCCLAPUR1, OseedsTotal !=0 & Omass != 0)
+OSeed_mass <- subset(GLTCCLAPUR, OseedsTotal !=0 & Omass != 0)
 ## linear reg:
 model <- lm(OSeed_mass$OseedsTotal~OSeed_mass$Omass)
-b <- model$coefficients[1]
-m <- model$coefficients[2]
+Ob <- model$coefficients[1]
+Om <- model$coefficients[2]
 
 ##subset data to get rows that have mass but dont have seeds
-OnoSeeds_yesMass <- subset(GLTCCLAPUR1, OseedsTotal == 0 | is.na(OseedsTotal) & Omass != 0)
+OnoSeeds_yesMass <- subset(GLTCCLAPUR, OseedsTotal == 0 | is.na(OseedsTotal) & Omass != 0)
 
 ## get the mass column for the regression
-x <- OnoSeeds_yesMass$Omass
-y <- m*x+b
+Ox <- OnoSeeds_yesMass$Omass
+Oy <- Om*Ox+Ob
 
 ##fill in empty rows 
-OnoSeeds_yesMass$OseedsTotal <- y 
+OnoSeeds_yesMass$OseedsTotal <- Oy 
 
-##Linerar regression for Cpen seed mass:
+##Linerar regression for Closed seed mass:
 ## subset for data rows that have both total seeds and mass:
-CSeed_mass <- subset(GLTCCLAPUR1, CseedsTotal !=0 & Cmass != 0)
+CSeed_mass <- subset(GLTCCLAPUR, CseedsTotal !=0 & Cmass != 0)
 
 ## linear reg:
 model <- lm(CSeed_mass$CseedsTotal~CSeed_mass$Cmass)
@@ -201,7 +203,7 @@ Cb <- model$coefficients[1]
 Cm <- model$coefficients[2]
 
 ##subset data to get rows that have mass but dont have seeds
-CnoSeeds_yesMass <- subset(GLTCCLAPUR1, CseedsTotal == 0 | is.na(CseedsTotal) & Cmass != 0)
+CnoSeeds_yesMass <- subset(GLTCCLAPUR, CseedsTotal == 0 | is.na(CseedsTotal) & Cmass != 0)
 ## get the mass column for the regression
 Cx <- CnoSeeds_yesMass$Cmass
 Cy <- Cm*Cx+Cb
@@ -209,19 +211,34 @@ Cy <- Cm*Cx+Cb
 ##fill in empty rows
 CnoSeeds_yesMass$OseedsTotal <- Cy
 
-## MAKE FOR LOOP
-
-## remove any NAs 
-GLTCCLAPUR <- GLTCCLAPUR %>%
-  drop_na(OseedsTotal, CseedsTotal)
+##MAKE A FOR LOOP
+CnoSeeds_yesMass$CseedsTotal <- Cy
+Final_GLTCCLAPUR <- GLTCCLAPUR
+CnoSeeds_yesMass.small <- CnoSeeds_yesMass %>% select(Cmass, CseedsTotal)
+OnoSeeds_yesMass.small <- OnoSeeds_yesMass %>% select(Omass, OseedsTotal)
+# Join OseedsTotal values
+Final_GLTCCLAPUR <- Final_GLTCCLAPUR %>%
+  left_join(OnoSeeds_yesMass.small, by = "Omass", suffix = c("", ".new")) %>%
+  mutate(OseedsTotal = ifelse(is.na(OseedsTotal), OseedsTotal.new, OseedsTotal)) %>%
+  select(-OseedsTotal.new)
+# Join CseedsTotal values
+Final_GLTCCLAPUR  <- Final_GLTCCLAPUR %>%
+  left_join(CnoSeeds_yesMass.small, by = "Cmass", suffix = c("", ".new")) %>%
+  mutate(CseedsTotal = ifelse(is.na(CseedsTotal), CseedsTotal.new, CseedsTotal)) %>%
+  select(-CseedsTotal.new)
 
 ## find seeds per bloom and add column 
-GLTCCLAPUR <- GLTCCLAPUR %>%
+Final_GLTCCLAPUR <- Final_GLTCCLAPUR %>%
   mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
   mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
 
-## remove unuseful columns
-GLTCCLAPUR <- subset(GLTCCLAPUR, select = -c(S, OseedsGood, Oblooms, OseedsBad, Cblooms, CseedsGood, CseedsBad, Omass, Cmass, notesOpen, notesClosed))
+## rename columns to match pollinator data
+Final_GLTCCLAPUR <- Final_GLTCCLAPUR %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp) 
+
 ```
 
 GLTCCOLLIGRA (DONE)
