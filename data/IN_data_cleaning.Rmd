@@ -40,9 +40,6 @@ GLTC_MADGRA <- GLTC_MADGRA %>%
 #  drop_na(OseedsGood, Oblooms) 
 ```
 
-
-
-
 WWCLAAMO cleaning: 
 ```{r}
 WWCLAAMO <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCLAAMO.csv")
