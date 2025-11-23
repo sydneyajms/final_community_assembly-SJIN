@@ -7,24 +7,100 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-summary(cars)
+## Read in CSV file
+MICGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/ MICGRA.csv")
+
+## remove unuseful columns
+MICGRA <- subset(MICGRA1, select = -c(S, Herbivory, X, Herbivory.1, X.1, ONotes, CNotes, Opods, Cpods))
+ 
+## remove mono plots 
+MICGRA <- subset(MICGRA, M != 0)
+
+## turn any blooms = 0 into NAs 
+MICGRA$Oblooms[MICGRA$Oblooms == 0] <- NA
+MICGRA$Cblooms[MICGRA$Cblooms == 0] <- NA
+
+## remove any NAs 
+MICGRA <- MICGRA %>%
+  drop_na(Oseeds, Oblooms, Cseeds, Cblooms)
+
+## find seeds per bloom and add column 
+MICGRA <- MICGRA %>%
+  mutate(OSeeds_Per_bloom = round(Oseeds/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(Cseeds/Cblooms, digits = 2))
+
+## rename columns to match pollinator data
+MICGRA <- MICGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)  
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+```{r}
+GILCAP1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GILCAP.csv")
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+## remove unuseful columns
+GILCAP <- subset(GILCAP1, select = -c(S, Herbivory, OflwrsGood, OflwrsBad, OseedsBad, OseedsGood, Omass, Herbivory.1, CflwrsGood, CflwrsBad, CseedsBad, CseedsGood, Cmass, notesOpen, notesClosed, Opods, Cpods, X))
+ 
+## remove mono plots 
+GILCAP <- subset(GILCAP, M != 0)
+
+## turn any blooms = 0 into NAs 
+GILCAP$Oblooms[GILCAP$Oblooms == 0] <- NA
+GILCAP$Cblooms[GILCAP$Cblooms == 0] <- NA
+
+## remove any NAs 
+GILCAP <- GILCAP %>%
+  drop_na(OseedsTotal, Oblooms, CseedsTotal, Cblooms)
+
+## find seeds per bloom and add column 
+GILCAP <- GILCAP %>%
+  mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
+
+## rename columns to match pollinator data
+GILCAP <- GILCAP %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)  
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+GLTCCOLLIGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+
+## remove unuseful columns
+GLTCCOLLIGRA <- subset(GLTCCOLLIGRA1, select = -c(S, OseedsGood, OseedsBad, Ocomplete., OemptyInflorMass, CseedsGood, CseedsBad, Ccomplete., CemptyInflorMass, notesOpen, notesClosed, X, X.1, X.2, X.3, X.4, X.5))
+ 
+## remove mono plots 
+GLTCCOLLIGRA <- subset(GLTCCOLLIGRA, M != 0)
+
+## turn any blooms = 0 into NAs 
+GLTCCOLLIGRA$Oblooms[GLTCCOLLIGRA$Oblooms == 0] <- NA
+GLTCCOLLIGRA$Cblooms[GLTCCOLLIGRA$Cblooms == 0] <- NA
+
+## remove any NAs 
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  drop_na(OseedsTotal, Oblooms, CseedsTotal, Cblooms)
+
+## find seeds per bloom and add column 
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
+
+## rename columns to match pollinator data
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)  
+```
+
