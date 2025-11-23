@@ -14,8 +14,8 @@ library(tidyr)
 
 ```{r cars}
 ## Read in CSV file
-#MICGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/ MICGRA.csv")
-MICGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/ MICGRA.csv")
+MICGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/ MICGRA.csv")
+#MICGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/ MICGRA.csv")
 
 ## remove unuseful columns
 MICGRA <- subset(MICGRA1, select = -c(S, Herbivory, X, Herbivory.1, X.1, ONotes, CNotes, Opods, Cpods))
@@ -46,8 +46,8 @@ MICGRA <- MICGRA %>%
 
 
 ```{r}
-#GILCAP1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GILCAP.csv")
-GILCAP1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GILCAP.csv")
+GILCAP1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GILCAP.csv")
+#GILCAP1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GILCAP.csv")
 
 ## remove unuseful columns
 GILCAP <- subset(GILCAP1, select = -c(S, Herbivory, OflwrsGood, OflwrsBad, OseedsBad, OseedsGood, Omass, Herbivory.1, CflwrsGood, CflwrsBad, CseedsBad, CseedsGood, Cmass, notesOpen, notesClosed, Opods, Cpods, X))
@@ -77,8 +77,8 @@ GILCAP <- GILCAP %>%
 ```
 
 ```{r}
-#GLTCCOLLIGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
-GLTCCOLLIGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+GLTCCOLLIGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+#GLTCCOLLIGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
 
 ## remove unuseful columns
 GLTCCOLLIGRA <- subset(GLTCCOLLIGRA1, select = -c(S, OseedsGood, OseedsBad, Ocomplete., OemptyInflorMass, CseedsGood, CseedsBad, Ccomplete., CemptyInflorMass, notesOpen, notesClosed, X, X.1, X.2, X.3, X.4, X.5))
@@ -109,7 +109,8 @@ GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
 
 
 ```{r}
-GLTC_MADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCMADGRA.csv")
+#GLTC_MADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCMADGRA.csv")
+GLTC_MADGRA <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCMADGRA.csv")
 
 GLTC_MADGRA <- subset(GLTC_MADGRA, 
                       select = -c(S, lostSeeds.O, Oflorets, lostSeeds.C, Cflorets, notesOpen, notesClosed, notesOther))        
@@ -206,7 +207,8 @@ cleaned_GLTC_MADGRA <- cleaned_GLTC_MADGRA %>%
 
 WWCLAAMO cleaning: 
 ```{r}
-WWCLAAMO <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCLAAMO.csv")
+#WWCLAAMO <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCLAAMO.csv")
+WWCLAAMO <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/WWCLAAMO.csv")
 
 WWCLAAMO <- subset(WWCLAAMO, 
                       select = -c(S, notesOpen, notesClosed))        
@@ -304,7 +306,8 @@ cleaned_WWCLAAMO <- cleaned_WWCLAAMO %>%
 
 WWCLAPUR cleaning: 
 ```{r}
-WWCLAPUR <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCLAPUR.csv")
+#WWCLAPUR <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCLAPUR.csv")
+WWCLAPUR <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/WWCLAPUR.csv")
 
 WWCLAPUR <- subset(WWCLAPUR, 
                       select = -c(S, notes, notesClosed))        
@@ -357,7 +360,8 @@ cleaned_WWCLAPUR <- cleaned_WWCLAPUR %>%
 
 WWCOLLIGRA cleaning: 
 ```{r}
-WWCOLLIGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCOLLIGRA.csv")
+#WWCOLLIGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCOLLIGRA.csv")
+WWCOLLIGRA <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/WWCOLLIGRA.csv")
 
 WWCOLLIGRA <- subset(WWCOLLIGRA, 
                       select = -c(S, Ocomplete., Ccomplete., notesOpen, notesClosed, 19,20,21,22,23,24))  #remove unuseful columns
@@ -453,7 +457,8 @@ cleaned_WWCOLLIGRA <- cleaned_WWCOLLIGRA %>%
 
 WWMADGRA
 ```{r}
-WWMADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWMADGRA.csv")
+#WWMADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWMADGRA.csv")
+WWMADGRA <-read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/WWMADGRA.csv")
 
 WWMADGRA <- subset(WWMADGRA, M != 0)       #removing mono plots
 
@@ -536,21 +541,25 @@ cleaned_WWMADGRA <- cleaned_WWMADGRA %>%
 ```
 binding!!!!
 ```{r}
-GILCAP <- GILCAP %>%
-  rename(OSeeds_Per_Bloom = OSeeds_Per_bloom,
+GILCAP_cleaned <- GILCAP %>%
+  rename(OSeeds = OseedsTotal,
+         CSeeds = CseedsTotal,
+         OSeeds_Per_Bloom = OSeeds_Per_bloom,
          CSeeds_Per_Bloom = CSeeds_Per_bloom)
 
-GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
-  rename(OSeeds_Per_Bloom = OSeeds_Per_bloom,
+GLTCCOLLIGRA_cleaned <- GLTCCOLLIGRA %>%
+  rename(OSeeds = OseedsTotal,
+         CSeeds = CseedsTotal,
+         OSeeds_Per_Bloom = OSeeds_Per_bloom,
          CSeeds_Per_Bloom = CSeeds_Per_bloom)
 
-MICGRA <- MICGRA %>%
+MICGRA_cleaned <- MICGRA %>%
   rename(OSeeds = Oseeds,
          CSeeds = Cseeds,
          OSeeds_Per_Bloom = OSeeds_Per_bloom,
          CSeeds_Per_Bloom = CSeeds_Per_bloom)
          
 
-All_Cleaned_Data <- rbind(GILCAP, MICGRA,GLTCCOLLIGRA, cleaned_GLTC_MADGRA,cleaned_WWCLAAMO, cleaned_WWCLAPUR, cleaned_WWCOLLIGRA)
-write.csv(All_Cleaned_Data, "/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
+All_Cleaned_Data <- rbind(GILCAP_cleaned, MICGRA_cleaned,GLTCCOLLIGRA_cleaned, cleaned_GLTC_MADGRA,cleaned_WWCLAAMO, cleaned_WWCLAPUR, cleaned_WWCOLLIGRA)
+write.csv(All_Cleaned_Data, "/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
 ```
