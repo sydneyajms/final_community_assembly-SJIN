@@ -360,11 +360,6 @@ WWMADGRA
 ```{r}
 WWMADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWMADGRA.csv")
 
-colnames(WWMADGRA) <- WWMADGRA[1, ]               #name columns row 1
-WWMADGRA <- WWMADGRA[-1, ]                  #remove first row
-WWMADGRA <- subset(WWMADGRA, 
-                      select = -c(S, lostSeeds.O, Oflorets, lostSeeds.C, Cflorets, notesOpen, notesClosed, notesOther))        #remove unuseful columns
-
 WWMADGRA <- subset(WWMADGRA, M != 0)       #removing mono plots
 
 WWMADGRA <- WWMADGRA %>%
@@ -376,9 +371,9 @@ WWMADGRA <- WWMADGRA %>%
 #making new seeds column 
 WWMADGRA <- WWMADGRA %>% 
   mutate(OSeeds = 
-           ifelse((!is.na(OseedsGood) & OseedsGood >= 0) | (!is.na(OseedsBad) & OseedsBad >=0), rowSums(cbind(OseedsGood, OseedsBad), na.rm = TRUE),
-                  ifelse(!is.na(OseedsGood) | !is.na(OseedsBad),
-                         ifelse(!is.na(OseedsGood), OseedsGood, OseedsBad),
+           ifelse((!is.na(OseedsGood) & OseedsGood >= 0) | (!is.na(Oseeds.Bad) & Oseeds.Bad >=0), rowSums(cbind(OseedsGood, Oseeds.Bad), na.rm = TRUE),
+                  ifelse(!is.na(OseedsGood) | !is.na(Oseeds.Bad),
+                         ifelse(!is.na(OseedsGood), OseedsGood, Oseeds.Bad),
                                 NA)))
 WWMADGRA <- WWMADGRA %>% 
   mutate(CSeeds = 
@@ -389,7 +384,7 @@ WWMADGRA <- WWMADGRA %>%
 
 #dropping old seed columns
 WWMADGRA <- subset(WWMADGRA, 
-                      select = -c(OseedsGood, OseedsBad, CseedsGood, CseedsBad))
+                      select = -c(OseedsGood, Oseeds.Bad, CseedsGood, CseedsBad))
 ##Linear regression for seed mass:
 ## FOR OPEN subset for data rows that have both total seeds and mass:
 OSeed_mass <- subset(WWMADGRA, OSeeds !=0 & Omass != 0)
