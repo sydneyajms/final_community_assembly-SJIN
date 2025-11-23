@@ -1,0 +1,556 @@
+---
+title: "Cleaned Data All"
+author: "Isabelle Nollette, Sydney James"
+date: "2025-11-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
+```
+
+
+```{r cars}
+## Read in CSV file
+#MICGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/ MICGRA.csv")
+MICGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/ MICGRA.csv")
+
+## remove unuseful columns
+MICGRA <- subset(MICGRA1, select = -c(S, Herbivory, X, Herbivory.1, X.1, ONotes, CNotes, Opods, Cpods))
+ 
+## remove mono plots 
+MICGRA <- subset(MICGRA, M != 0)
+
+## turn any blooms = 0 into NAs 
+MICGRA$Oblooms[MICGRA$Oblooms == 0] <- NA
+MICGRA$Cblooms[MICGRA$Cblooms == 0] <- NA
+
+## remove any NAs 
+MICGRA <- MICGRA %>%
+  drop_na(Oseeds, Oblooms, Cseeds, Cblooms)
+
+## find seeds per bloom and add column 
+MICGRA <- MICGRA %>%
+  mutate(OSeeds_Per_bloom = round(Oseeds/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(Cseeds/Cblooms, digits = 2))
+
+## rename columns to match pollinator data
+MICGRA <- MICGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)  
+```
+
+
+```{r}
+#GILCAP1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GILCAP.csv")
+GILCAP1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GILCAP.csv")
+
+## remove unuseful columns
+GILCAP <- subset(GILCAP1, select = -c(S, Herbivory, OflwrsGood, OflwrsBad, OseedsBad, OseedsGood, Omass, Herbivory.1, CflwrsGood, CflwrsBad, CseedsBad, CseedsGood, Cmass, notesOpen, notesClosed, Opods, Cpods, X))
+ 
+## remove mono plots 
+GILCAP <- subset(GILCAP, M != 0)
+
+## turn any blooms = 0 into NAs 
+GILCAP$Oblooms[GILCAP$Oblooms == 0] <- NA
+GILCAP$Cblooms[GILCAP$Cblooms == 0] <- NA
+
+## remove any NAs 
+GILCAP <- GILCAP %>%
+  drop_na(OseedsTotal, Oblooms, CseedsTotal, Cblooms)
+
+## find seeds per bloom and add column 
+GILCAP <- GILCAP %>%
+  mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
+
+## rename columns to match pollinator data
+GILCAP <- GILCAP %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)  
+```
+
+```{r}
+#GLTCCOLLIGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+GLTCCOLLIGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+
+## remove unuseful columns
+GLTCCOLLIGRA <- subset(GLTCCOLLIGRA1, select = -c(S, OseedsGood, OseedsBad, Ocomplete., OemptyInflorMass, CseedsGood, CseedsBad, Ccomplete., CemptyInflorMass, notesOpen, notesClosed, X, X.1, X.2, X.3, X.4, X.5))
+ 
+## remove mono plots 
+GLTCCOLLIGRA <- subset(GLTCCOLLIGRA, M != 0)
+
+## turn any blooms = 0 into NAs 
+GLTCCOLLIGRA$Oblooms[GLTCCOLLIGRA$Oblooms == 0] <- NA
+GLTCCOLLIGRA$Cblooms[GLTCCOLLIGRA$Cblooms == 0] <- NA
+
+## remove any NAs 
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  drop_na(OseedsTotal, Oblooms, CseedsTotal, Cblooms)
+
+## find seeds per bloom and add column 
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  mutate(OSeeds_Per_bloom = round(OseedsTotal/Oblooms, digits = 2)) %>%
+  mutate(CSeeds_Per_bloom = round(CseedsTotal/Cblooms, digits = 2))
+
+## rename columns to match pollinator data
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)  
+```
+
+
+```{r}
+GLTC_MADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCMADGRA.csv")
+
+GLTC_MADGRA <- subset(GLTC_MADGRA, 
+                      select = -c(S, lostSeeds.O, Oflorets, lostSeeds.C, Cflorets, notesOpen, notesClosed, notesOther))        
+
+#removing mono plots
+GLTC_MADGRA <- subset(GLTC_MADGRA, M != 0) 
+#changing ""  and 0 to NAs 
+GLTC_MADGRA[GLTC_MADGRA == ""| GLTC_MADGRA == 0] <- NA
+#dropped NAs
+GLTC_MADGRA <- GLTC_MADGRA %>%          
+  drop_na(Oblooms, Cblooms) 
+
+#making the headers match holiday data
+GLTC_MADGRA <- GLTC_MADGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp) 
+
+#making new seeds column 
+GLTC_MADGRA <- GLTC_MADGRA %>% 
+  mutate(OSeeds = 
+           ifelse((!is.na(OseedsGood) & OseedsGood >= 0) | (!is.na(Oseeds.Bad) & Oseeds.Bad >=0), rowSums(cbind(OseedsGood, Oseeds.Bad), na.rm = TRUE),
+                  ifelse(!is.na(OseedsGood) | !is.na(Oseeds.Bad),
+                         ifelse(!is.na(OseedsGood), OseedsGood, Oseeds.Bad),
+                         ifelse(!is.na(OseedsTotal), OseedsTotal,
+                                NA))))
+GLTC_MADGRA <- GLTC_MADGRA %>% 
+  mutate(CSeeds = 
+           ifelse((!is.na(CseedsGood) & CseedsGood >= 0) | (!is.na(CseedsBad) & CseedsBad >=0), rowSums(cbind(CseedsGood, CseedsBad), na.rm = TRUE),
+                  ifelse(!is.na(CseedsGood) | !is.na(CseedsBad),
+                         ifelse(!is.na(CseedsGood), CseedsGood, CseedsBad),
+                         ifelse(!is.na(CseedsTotal), CseedsTotal,
+                                NA))))
+
+#dropping old seed columns
+GLTC_MADGRA <- subset(GLTC_MADGRA, 
+                      select = -c(OseedsGood, Oseeds.Bad, OseedsTotal, CseedsGood, CseedsBad, CseedsTotal))
+##Linear regression for seed mass:
+## FOR OPEN subset for data rows that have both total seeds and mass:
+OSeed_mass <- subset(GLTC_MADGRA, OSeeds !=0 & Omass != 0)
+## linear reg:
+model <- lm(OSeed_mass$OSeeds~OSeed_mass$Omass)
+Ob <- model$coefficients[1]
+Om <- model$coefficients[2]
+##subset data to get rows that have mass but dont have seeds
+OnoSeeds_yesMass <- subset(GLTC_MADGRA, (OSeeds == 0 | is.na(OSeeds)) & Omass != 0)
+## get the mass column for the regression
+Ox <- OnoSeeds_yesMass$Omass
+Oy <- Om*Ox+Ob
+##fill in empty rows
+OnoSeeds_yesMass$OSeeds <- Oy
+
+## FOR CLOSED subset for data rows that have both total seeds and mass:
+CSeed_mass <- subset(GLTC_MADGRA, CSeeds !=0 & Cmass != 0)
+## linear reg:
+model <- lm(CSeed_mass$CSeeds~CSeed_mass$Cmass)
+Cb <- model$coefficients[1]
+Cm <- model$coefficients[2]
+##subset data to get rows that have mass but dont have seeds
+CnoSeeds_yesMass <- subset(GLTC_MADGRA, (CSeeds == 0 | is.na(CSeeds)) & Cmass != 0)
+## get the mass column for the regression
+Cx <- CnoSeeds_yesMass$Cmass
+Cy <- Cm*Cx+Cb
+##fill in empty rows
+CnoSeeds_yesMass$CSeeds <- Cy
+
+cleaned_GLTC_MADGRA <- GLTC_MADGRA 
+CnoSeeds_yesMass.small <- CnoSeeds_yesMass %>% select(Cmass, CSeeds)
+OnoSeeds_yesMass.small <- OnoSeeds_yesMass %>% select(Omass, OSeeds)
+
+# Join OSeeds values
+cleaned_GLTC_MADGRA <- cleaned_GLTC_MADGRA %>%
+  left_join(OnoSeeds_yesMass.small, by = "Omass", suffix = c("", ".new")) %>%
+  mutate(OSeeds = ifelse(is.na(OSeeds), OSeeds.new, OSeeds)) %>%
+  select(-OSeeds.new)
+
+# Join CSeeds values
+cleaned_GLTC_MADGRA <- cleaned_GLTC_MADGRA %>%
+  left_join(CnoSeeds_yesMass.small, by = "Cmass", suffix = c("", ".new")) %>%
+  mutate(CSeeds = ifelse(is.na(CSeeds), CSeeds.new, CSeeds)) %>%
+  select(-CSeeds.new)
+
+#adding seeds per bloom 
+cleaned_GLTC_MADGRA <- cleaned_GLTC_MADGRA %>%
+  mutate(OSeeds_Per_Bloom = OSeeds/Oblooms,
+         CSeeds_Per_Bloom = CSeeds/Cblooms)
+#drop remaining NAs 
+cleaned_GLTC_MADGRA <- cleaned_GLTC_MADGRA %>%
+  drop_na(OSeeds, CSeeds) %>%
+  subset(select = -c(Omass, Cmass))
+
+```
+
+WWCLAAMO cleaning: 
+```{r}
+WWCLAAMO <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCLAAMO.csv")
+
+WWCLAAMO <- subset(WWCLAAMO, 
+                      select = -c(S, notesOpen, notesClosed))        
+
+#removing mono plots
+WWCLAAMO <- subset(WWCLAAMO, M != 0) 
+#changing ""  and 0 to NAs 
+WWCLAAMO[WWCLAAMO == ""| WWCLAAMO == 0] <- NA
+#dropped NAs
+WWCLAAMO <- WWCLAAMO %>%          
+  drop_na(Oblooms, Cblooms) 
+
+#making the headers match holiday data
+WWCLAAMO <- WWCLAAMO %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp) 
+
+#making new seeds column 
+WWCLAAMO <- WWCLAAMO %>% 
+  mutate(OSeeds = 
+           ifelse((!is.na(OseedsGood) & OseedsGood >= 0) | (!is.na(OseedsBad) & OseedsBad >=0), rowSums(cbind(OseedsGood, OseedsBad), na.rm = TRUE),
+                  ifelse(!is.na(OseedsGood) | !is.na(OseedsBad),
+                         ifelse(!is.na(OseedsGood), OseedsGood, OseedsBad),
+                         ifelse(!is.na(OseedsTotal), OseedsTotal,
+                                NA))))
+WWCLAAMO <- WWCLAAMO %>% 
+  mutate(CSeeds = 
+           ifelse((!is.na(CseedsGood) & CseedsGood >= 0) | (!is.na(CseedsBad) & CseedsBad >=0), rowSums(cbind(CseedsGood, CseedsBad), na.rm = TRUE),
+                  ifelse(!is.na(CseedsGood) | !is.na(CseedsBad),
+                         ifelse(!is.na(CseedsGood), CseedsGood, CseedsBad),
+                         ifelse(!is.na(CseedsTotal), CseedsTotal,
+                                NA))))
+
+#dropping old seed columns
+WWCLAAMO <- subset(WWCLAAMO, 
+                      select = -c(OseedsGood, OseedsBad, OseedsTotal, CseedsGood, CseedsBad, CseedsTotal))
+##Linear regression for seed mass:
+## FOR OPEN subset for data rows that have both total seeds and mass:
+OSeed_mass <- subset(WWCLAAMO, OSeeds !=0 & Omass != 0)
+## linear reg:
+model <- lm(OSeed_mass$OSeeds~OSeed_mass$Omass)
+Ob <- model$coefficients[1]
+Om <- model$coefficients[2]
+##subset data to get rows that have mass but dont have seeds
+OnoSeeds_yesMass <- subset(WWCLAAMO, OSeeds == 0 | is.na(OSeeds) & Omass != 0)
+## get the mass column for the regression
+Ox <- OnoSeeds_yesMass$Omass
+Oy <- Om*Ox+Ob
+##fill in empty rows
+OnoSeeds_yesMass$OSeeds <- Oy
+
+## FOR CLOSED subset for data rows that have both total seeds and mass:
+CSeed_mass <- subset(WWCLAAMO, CSeeds !=0 & Cmass != 0)
+## linear reg:
+model <- lm(CSeed_mass$CSeeds~CSeed_mass$Cmass)
+Cb <- model$coefficients[1]
+Cm <- model$coefficients[2]
+##subset data to get rows that have mass but dont have seeds
+CnoSeeds_yesMass <- subset(WWCLAAMO, CSeeds == 0 | is.na(CSeeds) & Cmass != 0)
+## get the mass column for the regression
+Cx <- CnoSeeds_yesMass$Cmass
+Cy <- Cm*Cx+Cb
+##fill in empty rows
+CnoSeeds_yesMass$CSeeds <- Cy
+
+cleaned_WWCLAAMO <- WWCLAAMO 
+CnoSeeds_yesMass.small <- CnoSeeds_yesMass %>% select(Cmass, CSeeds)
+OnoSeeds_yesMass.small <- OnoSeeds_yesMass %>% select(Omass, OSeeds)
+
+# Join OSeeds values
+cleaned_WWCLAAMO <- cleaned_WWCLAAMO %>%
+  left_join(OnoSeeds_yesMass.small, by = "Omass", suffix = c("", ".new")) %>%
+  mutate(OSeeds = ifelse(is.na(OSeeds), OSeeds.new, OSeeds)) %>%
+  select(-OSeeds.new)
+
+# Join CSeeds values
+cleaned_WWCLAAMO <- cleaned_WWCLAAMO %>%
+  left_join(CnoSeeds_yesMass.small, by = "Cmass", suffix = c("", ".new")) %>%
+  mutate(CSeeds = ifelse(is.na(CSeeds), CSeeds.new, CSeeds)) %>%
+  select(-CSeeds.new)
+
+#adding seeds per bloom 
+cleaned_WWCLAAMO <- cleaned_WWCLAAMO %>%
+  mutate(OSeeds_Per_Bloom = OSeeds/Oblooms,
+         CSeeds_Per_Bloom = CSeeds/Cblooms)
+#drop remaining NAs 
+cleaned_WWCLAAMO <- cleaned_WWCLAAMO %>%
+  drop_na(OSeeds, CSeeds) %>%
+  subset(select = -c(Omass, Cmass))
+
+```
+
+
+WWCLAPUR cleaning: 
+```{r}
+WWCLAPUR <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCLAPUR.csv")
+
+WWCLAPUR <- subset(WWCLAPUR, 
+                      select = -c(S, notes, notesClosed))        
+
+#removing mono plots
+WWCLAPUR <- subset(WWCLAPUR, M != 0) 
+#changing ""  and 0 to NAs 
+WWCLAPUR[WWCLAPUR == ""| WWCLAPUR == 0] <- NA
+#dropped NAs
+WWCLAPUR <- WWCLAPUR %>%          
+  drop_na(Oblooms, Cblooms) 
+
+#making the headers match holiday data
+WWCLAPUR <- WWCLAPUR %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp) 
+
+#making new seeds column 
+WWCLAPUR <- WWCLAPUR %>% 
+  mutate(OSeeds = 
+           ifelse((!is.na(OseedsGood) & OseedsGood >= 0) | (!is.na(OseedsBad) & OseedsBad >=0), rowSums(cbind(OseedsGood, OseedsBad), na.rm = TRUE),
+                  ifelse(!is.na(OseedsGood) | !is.na(OseedsBad),
+                         ifelse(!is.na(OseedsGood), OseedsGood, OseedsBad),
+                         ifelse(!is.na(OseedsTotal), OseedsTotal,
+                                NA))))
+WWCLAPUR <- WWCLAPUR %>% 
+  mutate(CSeeds = 
+           ifelse((!is.na(CseedsGood) & CseedsGood >= 0) | (!is.na(CseedsBad) & CseedsBad >=0), rowSums(cbind(CseedsGood, CseedsBad), na.rm = TRUE),
+                  ifelse(!is.na(CseedsGood) | !is.na(CseedsBad),
+                         ifelse(!is.na(CseedsGood), CseedsGood, CseedsBad),
+                         ifelse(!is.na(CseedsTotal), CseedsTotal,
+                                NA))))
+
+#dropping old seed columns
+cleaned_WWCLAPUR <- subset(WWCLAPUR, 
+                      select = -c(OseedsGood, OseedsBad, OseedsTotal, CseedsGood, CseedsBad, CseedsTotal))
+
+#adding seeds per bloom 
+cleaned_WWCLAPUR <- cleaned_WWCLAPUR %>%
+  mutate(OSeeds_Per_Bloom = OSeeds/Oblooms,
+         CSeeds_Per_Bloom = CSeeds/Cblooms)
+#drop remaining NAs 
+cleaned_WWCLAPUR <- cleaned_WWCLAPUR %>%
+  drop_na(OSeeds, CSeeds) %>%
+  subset(select = -c(Omass, Cmass))
+```
+
+
+WWCOLLIGRA cleaning: 
+```{r}
+WWCOLLIGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWCOLLIGRA.csv")
+
+WWCOLLIGRA <- subset(WWCOLLIGRA, 
+                      select = -c(S, Ocomplete., Ccomplete., notesOpen, notesClosed, 19,20,21,22,23,24))  #remove unuseful columns
+
+#removing mono plots
+WWCOLLIGRA <- subset(WWCOLLIGRA, M != 0) 
+#changing ""  and 0 to NAs 
+WWCOLLIGRA[WWCOLLIGRA == ""| WWCOLLIGRA == 0] <- NA
+#dropped NAs
+WWCOLLIGRA <- WWCOLLIGRA %>%          
+  drop_na(Oblooms, Cblooms) 
+
+#making the headers match holiday data
+WWCOLLIGRA <- WWCOLLIGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp, 
+         "Omass" = OemptyInflorMass, 
+         "Cmass" = CemptyInflorMass) 
+
+#making new seeds column 
+WWCOLLIGRA <- WWCOLLIGRA %>% 
+  mutate(OSeeds = 
+           ifelse((!is.na(OseedsGood) & OseedsGood >= 0) | (!is.na(OseedsBad) & OseedsBad >=0), rowSums(cbind(OseedsGood, OseedsBad), na.rm = TRUE),
+                  ifelse(!is.na(OseedsGood) | !is.na(OseedsBad),
+                         ifelse(!is.na(OseedsGood), OseedsGood, OseedsBad),
+                                NA)))
+WWCOLLIGRA <- WWCOLLIGRA %>% 
+  mutate(CSeeds = 
+           ifelse((!is.na(CseedsGood) & CseedsGood >= 0) | (!is.na(CseedsBad) & CseedsBad >=0), rowSums(cbind(CseedsGood, CseedsBad), na.rm = TRUE),
+                  ifelse(!is.na(CseedsGood) | !is.na(CseedsBad),
+                         ifelse(!is.na(CseedsGood), CseedsGood, CseedsBad),
+                                NA)))
+
+#dropping old seed columns
+WWCOLLIGRA <- subset(WWCOLLIGRA, 
+                      select = -c(OseedsGood, OseedsBad, CseedsGood, CseedsBad))
+##Linear regression for seed mass:
+## FOR OPEN subset for data rows that have both total seeds and mass:
+OSeed_mass <- subset(WWCOLLIGRA, OSeeds !=0 & Omass != 0)
+## linear reg:
+model <- lm(OSeed_mass$OSeeds~OSeed_mass$Omass)
+Ob <- model$coefficients[1]
+Om <- model$coefficients[2]
+##subset data to get rows that have mass but dont have seeds
+OnoSeeds_yesMass <- subset(WWCOLLIGRA, OSeeds == 0 | is.na(OSeeds) & Omass != 0)
+## get the mass column for the regression
+Ox <- OnoSeeds_yesMass$Omass
+Oy <- Om*Ox+Ob
+##fill in empty rows
+OnoSeeds_yesMass$OSeeds <- Oy
+
+## FOR CLOSED subset for data rows that have both total seeds and mass:
+CSeed_mass <- subset(WWCOLLIGRA, CSeeds !=0 & Cmass != 0)
+## linear reg:
+model <- lm(CSeed_mass$CSeeds~CSeed_mass$Cmass)
+Cb <- model$coefficients[1]
+Cm <- model$coefficients[2]
+##subset data to get rows that have mass but dont have seeds
+CnoSeeds_yesMass <- subset(WWCOLLIGRA, CSeeds == 0 | is.na(CSeeds) & Cmass != 0)
+## get the mass column for the regression
+Cx <- CnoSeeds_yesMass$Cmass
+Cy <- Cm*Cx+Cb
+##fill in empty rows
+CnoSeeds_yesMass$CSeeds <- Cy
+
+cleaned_WWCOLLIGRA <- WWCOLLIGRA 
+CnoSeeds_yesMass.small <- CnoSeeds_yesMass %>% select(Cmass, CSeeds)
+OnoSeeds_yesMass.small <- OnoSeeds_yesMass %>% select(Omass, OSeeds)
+
+# Join OSeeds values
+cleaned_WWCOLLIGRA <- cleaned_WWCOLLIGRA %>%
+  left_join(OnoSeeds_yesMass.small, by = "Omass", suffix = c("", ".new")) %>%
+  mutate(OSeeds = ifelse(is.na(OSeeds), OSeeds.new, OSeeds)) %>%
+  select(-OSeeds.new)
+
+# Join CSeeds values
+cleaned_WWCOLLIGRA <- cleaned_WWCOLLIGRA %>%
+  left_join(CnoSeeds_yesMass.small, by = "Cmass", suffix = c("", ".new")) %>%
+  mutate(CSeeds = ifelse(is.na(CSeeds), CSeeds.new, CSeeds)) %>%
+  select(-CSeeds.new)
+
+#adding seeds per bloom 
+cleaned_WWCOLLIGRA <- cleaned_WWCOLLIGRA %>%
+  mutate(OSeeds_Per_Bloom = OSeeds/Oblooms,
+         CSeeds_Per_Bloom = CSeeds/Cblooms)
+#drop remaining NAs 
+cleaned_WWCOLLIGRA <- cleaned_WWCOLLIGRA %>%
+  drop_na(OSeeds, CSeeds) %>%
+  subset(select = -c(Omass, Cmass))
+```
+
+WWMADGRA
+```{r}
+WWMADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWMADGRA.csv")
+
+WWMADGRA <- subset(WWMADGRA, M != 0)       #removing mono plots
+
+WWMADGRA <- WWMADGRA %>%
+  rename("Stand" = St, 
+          "Seed_Mix" = M,
+          "Treatment" = genSpec,
+          "PlantGenusSpecies" = Sp)   #making the headers correct
+
+#making new seeds column 
+WWMADGRA <- WWMADGRA %>% 
+  mutate(OSeeds = 
+           ifelse((!is.na(OseedsGood) & OseedsGood >= 0) | (!is.na(Oseeds.Bad) & Oseeds.Bad >=0), rowSums(cbind(OseedsGood, Oseeds.Bad), na.rm = TRUE),
+                  ifelse(!is.na(OseedsGood) | !is.na(Oseeds.Bad),
+                         ifelse(!is.na(OseedsGood), OseedsGood, Oseeds.Bad),
+                                NA)))
+WWMADGRA <- WWMADGRA %>% 
+  mutate(CSeeds = 
+           ifelse((!is.na(CseedsGood) & CseedsGood >= 0) | (!is.na(CseedsBad) & CseedsBad >=0), rowSums(cbind(CseedsGood, CseedsBad), na.rm = TRUE),
+                  ifelse(!is.na(CseedsGood) | !is.na(CseedsBad),
+                         ifelse(!is.na(CseedsGood), CseedsGood, CseedsBad),
+                                NA)))
+
+#dropping old seed columns
+WWMADGRA <- subset(WWMADGRA, 
+                      select = -c(OseedsGood, Oseeds.Bad, CseedsGood, CseedsBad))
+##Linear regression for seed mass:
+## FOR OPEN subset for data rows that have both total seeds and mass:
+OSeed_mass <- subset(WWMADGRA, OSeeds !=0 & Omass != 0)
+## linear reg:
+model <- lm(OSeed_mass$OSeeds~OSeed_mass$Omass)
+Ob <- model$coefficients[1]
+Om <- model$coefficients[2]
+##subset data to get rows that have mass but dont have seeds
+OnoSeeds_yesMass <- subset(WWMADGRA, OSeeds == 0 | is.na(OSeeds) & Omass != 0)
+## get the mass column for the regression
+Ox <- OnoSeeds_yesMass$Omass
+Oy <- Om*Ox+Ob
+##fill in empty rows
+OnoSeeds_yesMass$OSeeds <- Oy
+
+## FOR CLOSED subset for data rows that have both total seeds and mass:
+CSeed_mass <- subset(WWMADGRA, CSeeds !=0 & Cmass != 0)
+## linear reg:
+model <- lm(CSeed_mass$CSeeds~CSeed_mass$Cmass)
+Cb <- model$coefficients[1]
+Cm <- model$coefficients[2]
+##subset data to get rows that have mass but dont have seeds
+CnoSeeds_yesMass <- subset(WWMADGRA, CSeeds == 0 | is.na(CSeeds) & Cmass != 0)
+## get the mass column for the regression
+Cx <- CnoSeeds_yesMass$Cmass
+Cy <- Cm*Cx+Cb
+##fill in empty rows
+CnoSeeds_yesMass$CSeeds <- Cy
+
+cleaned_WWMADGRA <- WWMADGRA 
+CnoSeeds_yesMass.small <- CnoSeeds_yesMass %>% select(Cmass, CSeeds)
+OnoSeeds_yesMass.small <- OnoSeeds_yesMass %>% select(Omass, OSeeds)
+
+# Join OSeeds values
+cleaned_WWMADGRA <- cleaned_WWMADGRA %>%
+  left_join(OnoSeeds_yesMass.small, by = "Omass", suffix = c("", ".new")) %>%
+  mutate(OSeeds = ifelse(is.na(OSeeds), OSeeds.new, OSeeds)) %>%
+  select(-OSeeds.new)
+
+# Join CSeeds values
+cleaned_WWMADGRA <- cleaned_WWMADGRA %>%
+  left_join(CnoSeeds_yesMass.small, by = "Cmass", suffix = c("", ".new")) %>%
+  mutate(CSeeds = ifelse(is.na(CSeeds), CSeeds.new, CSeeds)) %>%
+  select(-CSeeds.new)
+
+#adding seeds per bloom 
+cleaned_WWMADGRA <- cleaned_WWMADGRA %>%
+  mutate(OSeeds_Per_Bloom = OSeeds/Oblooms,
+         CSeeds_Per_Bloom = CSeeds/Cblooms)
+#drop remaining NAs 
+cleaned_WWMADGRA <- cleaned_WWMADGRA %>%
+  drop_na(OSeeds, CSeeds) %>%
+  subset(select = -c(Omass, Cmass))
+```
+binding!!!!
+```{r}
+GILCAP <- GILCAP %>%
+  rename(OSeeds_Per_Bloom = OSeeds_Per_bloom,
+         CSeeds_Per_Bloom = CSeeds_Per_bloom)
+
+GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
+  rename(OSeeds_Per_Bloom = OSeeds_Per_bloom,
+         CSeeds_Per_Bloom = CSeeds_Per_bloom)
+
+MICGRA <- MICGRA %>%
+  rename(OSeeds = Oseeds,
+         CSeeds = Cseeds,
+         OSeeds_Per_Bloom = OSeeds_Per_bloom,
+         CSeeds_Per_Bloom = CSeeds_Per_bloom)
+         
+
+All_Cleaned_Data <- rbind(GILCAP, MICGRA,GLTCCOLLIGRA, cleaned_GLTC_MADGRA,cleaned_WWCLAAMO, cleaned_WWCLAPUR, cleaned_WWCOLLIGRA)
+write.csv(All_Cleaned_Data, "/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
+```
