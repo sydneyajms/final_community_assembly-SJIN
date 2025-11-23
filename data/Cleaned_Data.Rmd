@@ -77,8 +77,8 @@ GILCAP <- GILCAP %>%
 ```
 
 ```{r}
-#GLTCCOLLIGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
-GLTCCOLLIGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+GLTCCOLLIGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+#GLTCCOLLIGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
 
 ## remove unuseful columns
 GLTCCOLLIGRA <- subset(GLTCCOLLIGRA1, select = -c(S, OseedsGood, OseedsBad, Ocomplete., OemptyInflorMass, CseedsGood, CseedsBad, Ccomplete., CemptyInflorMass, notesOpen, notesClosed, X, X.1, X.2, X.3, X.4, X.5))
@@ -104,7 +104,8 @@ GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
   rename("Stand" = St, 
           "Seed_Mix" = M,
           "Treatment" = genSpec,
-          "PlantGenusSpecies" = Sp)  
+          "PlantGenusSpecies" = Sp)
+        
 ```
 
 
@@ -453,7 +454,8 @@ cleaned_WWCOLLIGRA <- cleaned_WWCOLLIGRA %>%
 
 WWMADGRA
 ```{r}
-WWMADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWMADGRA.csv")
+#WWMADGRA <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WWMADGRA.csv")
+WWMADGRA <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/WWMADGRA.csv")
 
 WWMADGRA <- subset(WWMADGRA, M != 0)       #removing mono plots
 
