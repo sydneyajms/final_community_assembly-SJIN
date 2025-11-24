@@ -14,10 +14,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r cars}
 install.packages("bipartite")
 library(bipartite)
-veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
-ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
-#veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
-#ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.xlsx")
+#veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
+#ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
+veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
+ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
 
 str(veg)
 unique(veg$Stand)
@@ -25,8 +25,8 @@ Hstands <- paste(c("604","605","607","611","700","702","704","705"),"Holiday",se
 veg <- veg[veg$Stand%in%Hstands,]
 table(veg$PlantGenusSpecies, veg$Site)
 veg <- veg[veg$Site==6,]
-write.csv(veg, "/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
-#write.csv(veg, "/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
+#write.csv(veg, "/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
+write.csv(veg, "/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
 str(veg)
 
 str(ints)
@@ -42,8 +42,8 @@ new_poll <- ints %>%
   subset(select = -c(X, Year1, Site, Year, DoyStart)) %>%
   rename("Community" = PlantGenusSpecies)
 
-AllData <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
-#AllData <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
+#AllData <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
+AllData <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
 AllData <- AllData[, -1]
 
 new_poll$Stand <- as.numeric(new_poll$Stand)
