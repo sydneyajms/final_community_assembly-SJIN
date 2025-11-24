@@ -14,6 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r cars}
 install.packages("bipartite")
 library(bipartite)
+library(dplyr)
+library(tidyr)
 #veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
 #ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
 veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
@@ -48,5 +50,7 @@ AllData <- AllData[, -1]
 
 new_poll$Stand <- as.numeric(new_poll$Stand)
 AllData$Stand <- as.numeric(AllData$Stand)
+
+
 ```
 
