@@ -93,6 +93,9 @@ GLTC_CLAAMO1 <- subset(GLTC_CLAAMO1, M != 0)
 ## remove unuseful columns
 GLTC_CLAAMO <- subset(GLTC_CLAAMO1, select = -c(S, OseedsGood, OseedsBad, CseedsGood, CseedsBad, notesOpen, notesClosed))
 
+## add key column for cleaner merge
+GLTC_CLAAMO$Key <- 1:nrow(GLTC_CLAAMO)
+
 ##Linerar regression for Open seed mass:
 ## subset for data rows that have both total seeds and mass:
 OSeed_mass <- subset(GLTC_CLAAMO, OseedsTotal !=0 & Omass != 0)
@@ -102,7 +105,7 @@ Ob <- model$coefficients[1]
 Om <- model$coefficients[2]
 
 ##subset data to get rows that have mass but dont have seeds
-OnoSeeds_yesMass <- subset(GLTC_CLAAMO, OseedsTotal == 0 | is.na(OseedsTotal) & Omass != 0)
+OnoSeeds_yesMass <- subset(GLTC_CLAAMO, (OseedsTotal == 0 | is.na(OseedsTotal)) & Omass != 0)
 
 ## get the mass column for the regression
 Ox <- OnoSeeds_yesMass$Omass
@@ -121,7 +124,7 @@ Cb <- model$coefficients[1]
 Cm <- model$coefficients[2]
 
 ##subset data to get rows that have mass but dont have seeds
-CnoSeeds_yesMass <- subset(GLTC_CLAAMO, CseedsTotal == 0 | is.na(CseedsTotal) & Cmass != 0)
+CnoSeeds_yesMass <- subset(GLTC_CLAAMO, (CseedsTotal == 0 | is.na(CseedsTotal)) & Cmass != 0)
 ## get the mass column for the regression
 Cx <- CnoSeeds_yesMass$Cmass
 Cy <- Cm*Cx+Cb
@@ -131,19 +134,32 @@ CnoSeeds_yesMass$CseedsTotal <- Cy
 
 ##MAKE A FOR LOOP
 CnoSeeds_yesMass$CseedsTotal <- Cy
+GLTC_CLAAMO$OseedsTotal_orig <- GLTC_CLAAMO$OseedsTotal
+GLTC_CLAAMO$CseedsTotal_orig <- GLTC_CLAAMO$CseedsTotal
+GLTC_CLAAMO$Omass_orig <- GLTC_CLAAMO$Omass
+GLTC_CLAAMO$Cmass_orig <- GLTC_CLAAMO$Cmass
+
+## drop og columns 
+GLTC_CLAAMO$OseedsTotal <- NULL
+GLTC_CLAAMO$CseedsTotal <- NULL
+GLTC_CLAAMO$Omass <- NULL
+GLTC_CLAAMO$Cmass <- NULL
+
 Final_GLTC_CLAAMO <- GLTC_CLAAMO
-CnoSeeds_yesMass.small <- CnoSeeds_yesMass %>% select(Cmass, CseedsTotal)
-OnoSeeds_yesMass.small <- OnoSeeds_yesMass %>% select(Omass, OseedsTotal)
+
+CnoSeeds_yesMass.small <- CnoSeeds_yesMass %>% select(Cmass, CseedsTotal, Key)
+OnoSeeds_yesMass.small <- OnoSeeds_yesMass %>% select(Omass, OseedsTotal, Key)
+
 # Join OseedsTotal values
 Final_GLTC_CLAAMO <- Final_GLTC_CLAAMO %>%
-  left_join(OnoSeeds_yesMass.small, by = "Omass", suffix = c("", ".new")) %>%
-  mutate(OseedsTotal = ifelse(is.na(OseedsTotal), OseedsTotal.new, OseedsTotal)) %>%
-  select(-OseedsTotal.new)
+  left_join(OnoSeeds_yesMass.small, by = "Key") %>%
+  mutate(OseedsTotal = ifelse(is.na(OseedsTotal), OseedsTotal.orig, OseedsTotal)) %>%
+  select(-OseedsTotal.orig)
 # Join CseedsTotal values
 Final_GLTC_CLAAMO  <- Final_GLTC_CLAAMO %>%
-  left_join(CnoSeeds_yesMass.small, by = "Cmass", suffix = c("", ".new")) %>%
-  mutate(CseedsTotal = ifelse(is.na(CseedsTotal), CseedsTotal.new, CseedsTotal)) %>%
-  select(-CseedsTotal.new)
+  left_join(CnoSeeds_yesMass.small, by = "Key") %>%
+  mutate(CseedsTotal = ifelse(is.na(CseedsTotal), CseedsTotal.orig, CseedsTotal)) %>%
+  select(-CseedsTotal.orig)
 
 ## find seeds per bloom and add column 
 Final_GLTC_CLAAMO <- Final_GLTC_CLAAMO %>%
@@ -270,45 +286,7 @@ GLTCCOLLIGRA <- GLTCCOLLIGRA %>%
   rename("Stand" = St, 
           "Seed_Mix" = M,
           "Treatment" = genSpec,
-          "PlantGenusSpecies" = Sp)
-```
-
-CLEAN POLLINATOR DATA
-
-```{r}
-install.packages("bipartite")
-library(bipartite)
-veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
-ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
-
-str(veg)
-unique(veg$Stand)
-Hstands <- paste(c("604","605","607","611","700","702","704","705"),"Holiday",sep=":")
-veg <- veg[veg$Stand%in%Hstands,]
-table(veg$PlantGenusSpecies, veg$Site)
-veg <- veg[veg$Site==6,]
-write.csv(veg, "/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
-str(veg)
-
-str(ints)
-unique(ints$Stand)
-Hstands24 <- paste("2024",Hstands,sep="_")
-ints <- ints[ints$Stand%in%Hstands24,]
-head(ints)
-unique(ints$PlantGenusSpecies)
-
-new_poll <- ints %>%
-  separate(col = Stand, into = c("Year1", "Stand"), sep = "_") %>%
-  separate(col = Stand, into = c("Stand", "Site"), sep = ":") %>%
-  subset(select = -c(X, Year1, Site, Year, DoyStart)) %>%
-  rename("Community" = PlantGenusSpecies)
-
-AllData <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
-AllData <- AllData[, -1]
-
-new_poll$Stand <- as.numeric(new_poll$Stand)
-AllData$Stand <- as.numeric(AllData$Stand)
-
+          "PlantGenusSpecies" = Sp)  
 
 ```
 
