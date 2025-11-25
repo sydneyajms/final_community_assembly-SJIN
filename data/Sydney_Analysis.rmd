@@ -43,42 +43,21 @@ both_data1 <- ints1 %>%
 
 #Remove extra plant data 
 both_data$PlantGenusSpecies.x <- NULL
-#Filter into only 4 sampling rounds (1 per month): 5/23/24, 6/20/24 and 7/22/24 and 
+#Filter into only 3 sampling rounds (1 per month): 5/23/24, 6/20/24 and 7/22/24 and 
 both_data <- both_data1 %>%
   filter(Date == "6/20/24" | Date == "7/22/24" | Date == "5/23/24")
   
-#Split all dtaa into stand
+#Split all data into stand
 Stand_df <- split(both_data, both_data$Stand, drop = FALSE)
 
 `604` <- as.data.frame(Stand_df$`604`)
 `700` <- as.data.frame(Stand_df$`700`)
 `702` <- as.data.frame(Stand_df$`702`)
 
-# str(veg)
-# unique(veg$Stand)
-# Hstands <- paste(c("604","605","607","611","700","702","704","705"),"Holiday",sep=":")
-# veg <- veg[veg$Stand%in%Hstands,]
-# table(veg$PlantGenusSpecies, veg$Site)
-# veg <- veg[veg$Site==6,]
-
-# str(ints)
-# unique(ints$Stand)
-# Hstands24 <- paste("2024",Hstands,sep="_")
-# ints <- ints[ints$Stand%in%Hstands24,]
-# head(ints)
-# unique(ints$PlantGenusSpecies)
-
-# new_poll <- ints %>%
-#   separate(col = Stand, into = c("Year1", "Stand"), sep = "_") %>%
-#   separate(col = Stand, into = c("Stand", "Site"), sep = ":") %>%
-#   subset(select = -c(X, Year1, Site, Year, DoyStart))
 
 AllData <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
 AllData <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
 AllData <- AllData[, -1]
-
-new_poll$Stand <- as.numeric(new_poll$Stand)
-AllData$Stand <- as.numeric(AllData$Stand)
 
 
 ```
