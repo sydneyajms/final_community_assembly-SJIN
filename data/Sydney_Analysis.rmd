@@ -1,0 +1,72 @@
+---
+title: "Analysis Joined"
+output: html_document
+date: "2025-11-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+ Cleaning and joining pollinator data 
+ 
+```{r cars}
+install.packages("bipartite")
+library(bipartite)
+library(dplyr)
+library(tidyr)
+veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
+ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
+#veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
+#ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
+
+veg_data <- veg %>%
+  separate(col = Stand, into = c("Stand", "Loc"), sep = ":") %>%
+  subset(Stand = c("604","605","607","611","700","702","704","705")) %>%
+  subset(Site == 6) %>%
+  subset(Transect != "Unenhanced") %>%
+  subset(select = c("Stand", "Date", "Transect", "PlantGenusSpecies"))
+
+ints1 <- ints %>%
+  filter(Year == 2024) %>%
+  separate(col = Stand, into = c("Year1", "Stand"), sep = "_") %>%
+  separate(col = Stand, into = c("Stand", "Site"), sep = ":") %>%
+  subset(Stand = c("604","605","607","611","700","702","704","705"))
+
+both_data <- ints1 %>%
+  inner_join(veg_data, by = "Stand")
+
+# str(veg)
+# unique(veg$Stand)
+# Hstands <- paste(c("604","605","607","611","700","702","704","705"),"Holiday",sep=":")
+# veg <- veg[veg$Stand%in%Hstands,]
+# table(veg$PlantGenusSpecies, veg$Site)
+# veg <- veg[veg$Site==6,]
+
+# str(ints)
+# unique(ints$Stand)
+# Hstands24 <- paste("2024",Hstands,sep="_")
+# ints <- ints[ints$Stand%in%Hstands24,]
+# head(ints)
+# unique(ints$PlantGenusSpecies)
+
+# new_poll <- ints %>%
+#   separate(col = Stand, into = c("Year1", "Stand"), sep = "_") %>%
+#   separate(col = Stand, into = c("Stand", "Site"), sep = ":") %>%
+#   subset(select = -c(X, Year1, Site, Year, DoyStart))
+
+AllData <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
+AllData <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
+AllData <- AllData[, -1]
+
+new_poll$Stand <- as.numeric(new_poll$Stand)
+AllData$Stand <- as.numeric(AllData$Stand)
+
+write.csv(veg, "/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
+#write.csv(veg, "/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
+str(veg)
+
+
+```
+
