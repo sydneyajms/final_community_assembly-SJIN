@@ -35,31 +35,24 @@ ints1 <- ints %>%
   filter(Stand == "604" | Stand == "605" | Stand == "607" | Stand == "611" | Stand == "700" | Stand ==     "702" | Stand == "704" | Stand == "705")
   #subset(Stand = c("604","605","607","611","700","702","704","705"))
 
-both_data <- ints1 %>%
+both_data1 <- ints1 %>%
   inner_join(veg_data, by = "Stand", relationship = "many-to-many") %>%
   subset(select = -c(X, Year1, Site, Year, DoyStart)) %>%
   rename("Pollinator" = GenusSpecies) 
 
 
-
+#Remove extra plant data 
 both_data$PlantGenusSpecies.x <- NULL
-
+#Filter into only 4 sampling rounds (1 per month): 5/23/24, 6/20/24 and 7/22/24 and 
+both_data <- both_data1 %>%
+  filter(Date == "6/20/24" | Date == "7/22/24" | Date == "5/23/24")
+  
+#Split all dtaa into stand
 Stand_df <- split(both_data, both_data$Stand, drop = FALSE)
 
 `604` <- as.data.frame(Stand_df$`604`)
-`605` <- as.data.frame(Stand_df$`605`)
-`607` <- as.data.frame(Stand_df$`607`)
-`611` <- as.data.frame(Stand_df$`611`)
 `700` <- as.data.frame(Stand_df$`700`)
 `702` <- as.data.frame(Stand_df$`702`)
-`704` <- as.data.frame(Stand_df$`704`)
-`705` <- as.data.frame(Stand_df$`705`)
-
-
-# for(i in 1:nrow(Stand_df)){
-#   Stand.no <- split(i, i$Transect, drop = FALSE)
-#   list[i] <- print(paste(Stand.no, Transect))
-# }
 
 # str(veg)
 # unique(veg$Stand)
