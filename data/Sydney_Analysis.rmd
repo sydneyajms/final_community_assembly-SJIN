@@ -42,18 +42,31 @@ both_data1 <- ints1 %>%
 
 
 #Remove extra plant data 
-both_data$PlantGenusSpecies.x <- NULL
-#Filter into only 3 sampling rounds (1 per month): 5/23/24, 6/20/24 and 7/22/24 and 
-both_data <- both_data1 %>%
-  filter(Date == "6/20/24" | Date == "7/22/24" | Date == "5/23/24")
+both_data1$PlantGenusSpecies.x <- NULL
+#merge stand and sampling round 
+both_data1$Standsr <- paste(both_data1$Stand, both_data1$Date, both_data1$Transect, sep = "_")
+
+#Split all data into each stand
+Stand_df <- split(both_data1, both_data1$Standsr, drop = FALSE)
+
+# Make each community into adjacency matrix stored in a list - for loop 
+
+WHOLE_LIST <- vector("list", length = length(Stand_df))
+for(i in seq_along(Stand_df)){
+ThisMix <- Stand_df[[i]] %>%
+  group_by(Pollinator, PlantGenusSpecies.y) %>%
+  summarize(interactions = n(), .groups = 'drop') %>%
+  pivot_wider(names_from = Pollinator, values_from = interactions) %>%
+  column_to_rownames(var = "PlantGenusSpecies.y") 
+  WHOLE_LIST[[i]] <- ThisMix
+}
+
+
+
+# test <- MixStand_df %>%
+#   pivot_wider(names_from = Pollinator, values_from = interactions) %>%
+#   column_to_rownames(var = "PlantGenusSpecies.y")
   
-#Split all data into stand
-Stand_df <- split(both_data, both_data$Stand, drop = FALSE)
-
-`604` <- as.data.frame(Stand_df$`604`)
-`700` <- as.data.frame(Stand_df$`700`)
-`702` <- as.data.frame(Stand_df$`702`)
-
 
 AllData <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
 AllData <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
