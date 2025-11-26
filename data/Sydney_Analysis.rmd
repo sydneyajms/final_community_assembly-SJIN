@@ -63,14 +63,6 @@ ThisMix <- Stand_df[[i]] %>%
 
 
 
-# test <- MixStand_df %>%
-#   pivot_wider(names_from = Pollinator, values_from = interactions) %>%
-#   column_to_rownames(var = "PlantGenusSpecies.y")
-  
-
-AllData <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
-AllData <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
-AllData <- AllData[, -1]
 
 
 ```
