@@ -16,41 +16,81 @@ install.packages("bipartite")
 library(bipartite)
 library(dplyr)
 library(tidyr)
+library(tidyverse)
 #veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
 #ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
 veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
 ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
 
-str(veg)
-unique(veg$Stand)
-Hstands <- paste(c("604","605","607","611","700","702","704","705"),"Holiday",sep=":")
-veg <- veg[veg$Stand%in%Hstands,]
-table(veg$PlantGenusSpecies, veg$Site)
-veg <- veg[veg$Site==6,]
-#write.csv(veg, "/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
-write.csv(veg, "/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
-str(veg)
+veg_data <- veg %>%
+  separate(col = Stand, into = c("Stand", "Loc"), sep = ":") %>%
+  subset(Stand %in% c("604","605","607","611","700","702","704","705")) %>%
+  subset(Site == 6) %>%
+  subset(Transect != "Unenhanced") %>%
+  subset(select = c("Stand", "Date", "Transect", "PlantGenusSpecies"))
 
-str(ints)
-unique(ints$Stand)
-Hstands24 <- paste("2024",Hstands,sep="_")
-ints <- ints[ints$Stand%in%Hstands24,]
-head(ints)
-unique(ints$PlantGenusSpecies)
-
-new_poll <- ints %>%
+ints1 <- ints %>%
+  filter(Year == 2024) %>%
   separate(col = Stand, into = c("Year1", "Stand"), sep = "_") %>%
   separate(col = Stand, into = c("Stand", "Site"), sep = ":") %>%
+  filter(Stand == "604" | Stand == "605" | Stand == "607" | Stand == "611" | Stand == "700" | Stand ==     "702" | Stand == "704" | Stand == "705")
+  #subset(Stand = c("604","605","607","611","700","702","704","705"))
+
+both_data1 <- ints1 %>%
+  inner_join(veg_data, by = "Stand", relationship = "many-to-many") %>%
   subset(select = -c(X, Year1, Site, Year, DoyStart)) %>%
-  rename("Community" = PlantGenusSpecies)
-
-#AllData <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
-AllData <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
-AllData <- AllData[, -1]
-
-new_poll$Stand <- as.numeric(new_poll$Stand)
-AllData$Stand <- as.numeric(AllData$Stand)
+  rename("Pollinator" = GenusSpecies) 
 
 
+#Remove extra plant data 
+both_data1$PlantGenusSpecies.x <- NULL
+#merge stand and sampling round 
+both_data1$Standsr <- paste(both_data1$Stand, both_data1$Date, both_data1$Transect, sep = "_")
+
+#Split all data into each stand
+Stand_df <- split(both_data1, both_data1$Standsr, drop = FALSE)
+
+# Make each community into adjacency matrix stored in a list - for loop 
+
+WHOLE_LIST <- vector("list", length = length(Stand_df))
+for(i in seq_along(Stand_df)){
+ThisMix <- Stand_df[[i]] %>%
+  group_by(Pollinator, PlantGenusSpecies.y) %>%
+  summarize(interactions = n(), .groups = 'drop') %>%
+  pivot_wider(names_from = Pollinator, values_from = interactions) %>%
+  column_to_rownames(var = "PlantGenusSpecies.y") 
+  WHOLE_LIST[[i]] <- ThisMix
+}
+
+WHOLE_LIST1 <- lapply(WHOLE_LIST, function(df) {
+  mat <- as.matrix(df)
+  rownames(mat) <- rownames(df)  # preserve plant species names
+  return(mat)
+})
+
+WHOLE_LIST2 <- lapply(WHOLE_LIST1, function(df) {
+  # preserve names
+  rn <- rownames(df)
+  cn <- colnames(df)
+  
+  # convert to numeric matrix safely
+  mat <- matrix(as.numeric(unlist(df)), nrow = nrow(df), ncol = ncol(df))
+  
+  # restore names
+  rownames(mat) <- rn
+  colnames(mat) <- cn
+  
+  return(mat)
+})
+
+nestedness_values <- sapply(WHOLE_LIST2, function(mat) networklevel(mat, index = "weighted NODF"))
+
+
+df <- WHOLE_LIST2[[1]]
+mat <- matrix(as.numeric(unlist(df)), nrow=nrow(df), ncol=ncol(df))
+rownames(mat) <- rownames(df)
+colnames(mat) <- colnames(df)
+
+networklevel(mat, index="NODF")
 ```
 
