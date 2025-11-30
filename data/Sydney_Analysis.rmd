@@ -16,6 +16,7 @@ install.packages("bipartite")
 library(bipartite)
 library(dplyr)
 library(tidyr)
+library(tibble)
 veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
 ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
 #veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
@@ -38,7 +39,7 @@ ints1 <- ints %>%
 both_data1 <- ints1 %>%
   inner_join(veg_data, by = "Stand", relationship = "many-to-many") %>%
   subset(select = -c(X, Year1, Site, Year, DoyStart)) %>%
-  rename("Pollinator" = GenusSpecies) 
+  rename("Pollinator" = GenusSpecies, "Plant" = PlantGenusSpecies.y) 
 
 
 #Remove extra plant data 
@@ -54,13 +55,12 @@ Stand_df <- split(both_data1, both_data1$Standsr, drop = FALSE)
 WHOLE_LIST <- vector("list", length = length(Stand_df))
 for(i in seq_along(Stand_df)){
 ThisMix <- Stand_df[[i]] %>%
-  group_by(Pollinator, PlantGenusSpecies.y) %>%
+  group_by(Pollinator, Plant) %>%
   summarize(interactions = n(), .groups = 'drop') %>%
   pivot_wider(names_from = Pollinator, values_from = interactions) %>%
-  column_to_rownames(var = "PlantGenusSpecies.y") 
+  column_to_rownames( var = "Plant") 
   WHOLE_LIST[[i]] <- ThisMix
 }
-
 
 
 
