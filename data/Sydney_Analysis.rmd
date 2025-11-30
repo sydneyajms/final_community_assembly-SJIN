@@ -62,7 +62,12 @@ ThisMix <- Stand_df[[i]] %>%
   WHOLE_LIST[[i]] <- ThisMix
 }
 
-
+nested_values <- vector("list", length = length(WHOLE_LIST))
+for(i in seq_along(WHOLE_LIST)){
+  nodf  <- WHOLE_LIST[[i]] %>%
+    networklevel(index = "nestedness")
+    nested_values[[i]] <- nodf
+}
 
 
 ```
