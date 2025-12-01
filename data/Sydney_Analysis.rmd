@@ -55,11 +55,18 @@ all_plants <- unique(unlist(lapply(Stand_df, function(df) df$Plant)))
 all_pollinators <- unique(unlist(lapply(Stand_df, function(df) df$Pollinator)))
 
 # Make each community into adjacency matrix stored in a list - for loop retaining no of rows/col
+# 
+# Stand_df_mat <- vector("list", length = length(Stand_df))
+# for(i in seq_along(Stand_df)){
+# this.mat <- as.matrix(Stand_df[[i]])
+#   rownames(this.mat) <- rownames(Stand_df[[i]])
+#   Stand_df_mat[[i]] <- this.mat
+# }
 
 WHOLE_LIST <- vector("list", length = length(Stand_df))
 for(i in seq_along(Stand_df)){
  ThisMix <- Stand_df[[i]] %>%
-  group_by(Pollinator, Plant) %>%
+  #group_by(Pollinator, Plant) %>%
   complete(Plant = all_plants, Pollinator = all_pollinators, fill = list(interactions = 0)) %>%
   summarize(interactions = n(), .groups = "drop") %>%
   pivot_wider(names_from = Pollinator, values_from = interactions, values_fill = 0) %>%
