@@ -66,15 +66,16 @@ all_pollinators <- unique(unlist(lapply(Stand_df, function(df) df$Pollinator)))
 WHOLE_LIST <- vector("list", length = length(Stand_df))
 for(i in seq_along(Stand_df)){
  ThisMix <- Stand_df[[i]] %>%
-  #group_by(Pollinator, Plant) %>%
+  ungroup() %>%
   complete(Plant = all_plants, Pollinator = all_pollinators, fill = list(interactions = 0)) %>%
+  group_by(Pollinator, Plant) %>%
   summarize(interactions = n(), .groups = "drop") %>%
   pivot_wider(names_from = Pollinator, values_from = interactions, values_fill = 0) %>%
   column_to_rownames( var = "Plant")
   ThisMix[is.na(ThisMix)] <- 0
+  ThisMix[ThisMix == 1] <- 0
   WHOLE_LIST[[i]] <- ThisMix
 }
-
 
 nested_values <- vector(length = length(WHOLE_LIST))
 for(i in seq_along(WHOLE_LIST)){
