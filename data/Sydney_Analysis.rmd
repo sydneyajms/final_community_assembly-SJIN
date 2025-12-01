@@ -81,7 +81,7 @@ nested_values <- vector(length = length(WHOLE_LIST))
 for(i in seq_along(WHOLE_LIST)){
   this.mat <- as.matrix(WHOLE_LIST[[i]])
   rownames(this.mat) <- rownames(WHOLE_LIST[[i]])
-  nodf <- networklevel(this.mat, index = "connectance")
+  nodf <- networklevel(this.mat, index = "nestedness")
     nested_values[[i]] <- nodf
 }
 
