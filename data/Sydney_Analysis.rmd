@@ -6,13 +6,13 @@ date: "2025-11-23"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+install.packages("bipartite")
 ```
 
 
  Cleaning and joining pollinator data 
  
 ```{r cars}
-install.packages("bipartite")
 library(bipartite)
 library(dplyr)
 library(tidyr)
@@ -50,22 +50,30 @@ both_data1$Standsr <- paste(both_data1$Stand, both_data1$Date, both_data1$Transe
 #Split all data into each stand
 Stand_df <- split(both_data1, both_data1$Standsr, drop = FALSE)
 
-# Make each community into adjacency matrix stored in a list - for loop 
+# collect all Plants and Pollinator names: 
+all_plants <- unique(unlist(lapply(Stand_df, function(df) df$Plant)))
+all_pollinators <- unique(unlist(lapply(Stand_df, function(df) df$Pollinator)))
+
+# Make each community into adjacency matrix stored in a list - for loop retaining no of rows/col
 
 WHOLE_LIST <- vector("list", length = length(Stand_df))
 for(i in seq_along(Stand_df)){
-ThisMix <- Stand_df[[i]] %>%
+ ThisMix <- Stand_df[[i]] %>%
   group_by(Pollinator, Plant) %>%
-  summarize(interactions = n(), .groups = 'drop') %>%
-  pivot_wider(names_from = Pollinator, values_from = interactions) %>%
-  column_to_rownames( var = "Plant") 
+  complete(Plant = all_plants, Pollinator = all_pollinators, fill = list(interactions = 0)) %>%
+  summarize(interactions = n(), .groups = "drop") %>%
+  pivot_wider(names_from = Pollinator, values_from = interactions, values_fill = 0) %>%
+  column_to_rownames( var = "Plant")
+  ThisMix[is.na(ThisMix)] <- 0
   WHOLE_LIST[[i]] <- ThisMix
 }
 
-nested_values <- vector("list", length = length(WHOLE_LIST))
+
+nested_values <- vector(length = length(WHOLE_LIST))
 for(i in seq_along(WHOLE_LIST)){
-  nodf  <- WHOLE_LIST[[i]] %>%
-    networklevel(index = "nestedness")
+  this.mat <- as.matrix(WHOLE_LIST[[i]])
+  rownames(this.mat) <- rownames(WHOLE_LIST[[i]])
+  nodf <- networklevel(this.mat, index = "connectance")
     nested_values[[i]] <- nodf
 }
 
