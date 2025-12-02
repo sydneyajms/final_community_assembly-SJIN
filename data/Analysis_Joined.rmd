@@ -92,6 +92,7 @@ null_fun <- function(x) vegan::nestedtemp(x, index = "NODF", weighted = TRUE)$st
 standnull_nested_values <- lapply(WHOLE_LIST, function(nullmodel) {
   oecosimu(nullmodel, null_fun, method = "r2dtable", nsimul = 100)
 })
+names(standnull_nested_values) = names(WHOLE_LIST)
 
 #creating a heat map of all communities 
 
