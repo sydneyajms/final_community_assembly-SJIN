@@ -34,7 +34,6 @@ ints1 <- ints %>%
   separate(col = Stand, into = c("Year1", "Stand"), sep = "_") %>%
   separate(col = Stand, into = c("Stand", "Site"), sep = ":") %>%
   filter(Stand == "604" | Stand == "605" | Stand == "607" | Stand == "611" | Stand == "700" | Stand ==     "702" | Stand == "704" | Stand == "705")
-  #subset(Stand = c("604","605","607","611","700","702","704","705"))
 
 both_data1 <- ints1 %>%
   inner_join(veg_data, by = "Stand", relationship = "many-to-many") %>%
@@ -45,7 +44,7 @@ both_data1 <- ints1 %>%
 #Remove extra plant data 
 both_data1$PlantGenusSpecies.x <- NULL
 #merge stand and sampling round 
-both_data1$Standsr <- paste(both_data1$Stand, both_data1$Date, both_data1$Transect, sep = "_")
+both_data1$Standsr <- paste(both_data1$Stand, both_data1$Transect, both_data1$Date, sep = "_")
 
 #Split all data into each stand
 Stand_df <- split(both_data1, both_data1$Standsr, drop = FALSE)
@@ -81,8 +80,42 @@ for(i in seq_along(WHOLE_LIST)){
 }
 
 nested_values_st <- paste(names(WHOLE_LIST), nested_values, sep = "_")
-#head(nested_values_st)
+head(nested_values_st)
 
-seed_count <- read.csv()
+```
+Prepare Seed data to be joined to nestedness values:
+
+
+```{r}
+seed_count <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
+
+# rename mixes to match pollinator/data
+seed_count$Seed_Mix <- as.character(seed_count$Seed_Mix)
+seed_count$Seed_Mix[seed_count$Seed_Mix == 1] <- "Mix1"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 2] <- "Mix2"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 3] <- "Mix3"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 4] <- "Mix4"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 5] <- "Mix5"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 6] <- "Mix6"
+
+# rename plants to match pollinator/data
+seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "CLAAMO"] <- "Clarkia amoena" seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies ==　"CLAPUR" ] <- "Clarkia purpurea"
+seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "GILCAP"] <- "Gilia capitata"
+seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "COLLIGRA"] <- "Collinsia grandiflora"
+seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "MADGRA"] <- "Madia gracilis"
+  
+  
+# rename columns and remove uneeded ones
+seed_count1 <- seed_count %>%
+  rename("Transect" = Seed_Mix, "Plant" = PlantGenusSpecies) %>%
+  subset(select = -c(X, Treatment))
+# paste stand and mix and split seed data by these combos 
+seed_count1$Standsr1 <- paste(seed_count1$Stand, seed_count1$Transect, sep = "_")
+seed_df <- split(seed_count1, seed_count1$Standsr1, drop = FALSE)
+  
+# inner_join by stand, plant and mix?
+
+ 
+
 ```
 
