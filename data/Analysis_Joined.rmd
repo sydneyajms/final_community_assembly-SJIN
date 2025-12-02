@@ -18,14 +18,14 @@ library(dplyr)
 library(tidyr)
 library(tidyverse)
 library(tibble)
-veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
-ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
-#veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
-#ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
+#veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
+#ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
+veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
+ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
 
 veg_data <- veg %>%
   separate(col = Stand, into = c("Stand", "Loc"), sep = ":") %>%
-  subset(Stand %in% c("604","605","607","611","700","702","704","705")) %>%
+  subset(Stand = c("604","605","607","611","700","702","704","705")) %>%
   subset(Site == 6) %>%
   subset(Transect != "Unenhanced") %>%
   subset(select = c("Stand", "Date", "Transect", "PlantGenusSpecies"))
@@ -40,7 +40,7 @@ ints1 <- ints %>%
 both_data1 <- ints1 %>%
   inner_join(veg_data, by = "Stand", relationship = "many-to-many") %>%
   subset(select = -c(X, Year1, Site, Year, DoyStart)) %>%
-  rename("Pollinator" = GenusSpecies) 
+  rename("Pollinator" = GenusSpecies, "Plant" = PlantGenusSpecies.y) 
 
 
 #Remove extra plant data 
@@ -51,47 +51,44 @@ both_data1$Standsr <- paste(both_data1$Stand, both_data1$Date, both_data1$Transe
 #Split all data into each stand
 Stand_df <- split(both_data1, both_data1$Standsr, drop = FALSE)
 
-# Make each community into adjacency matrix stored in a list - for loop 
+# collect all Plants and Pollinator names: 
+all_plants <- unique(unlist(lapply(Stand_df, function(df) df$Plant)))
+all_pollinators <- unique(unlist(lapply(Stand_df, function(df) df$Pollinator)))
+
+# Make each community into adjacency matrix stored in a list - for loop retaining no of rows/col
+# 
 
 WHOLE_LIST <- vector("list", length = length(Stand_df))
 for(i in seq_along(Stand_df)){
-ThisMix <- Stand_df[[i]] %>%
-  group_by(Pollinator, PlantGenusSpecies.y) %>%
-  summarize(interactions = n(), .groups = 'drop') %>%
-  pivot_wider(names_from = Pollinator, values_from = interactions) %>%
-  column_to_rownames(var = "PlantGenusSpecies.y") 
+ ThisMix <- Stand_df[[i]] %>%
+  ungroup() %>%
+  complete(Plant = all_plants, Pollinator = all_pollinators, fill = list(interactions = 0)) %>%
+  group_by(Pollinator, Plant) %>%
+  summarize(interactions = n(), .groups = "drop") %>%
+  pivot_wider(names_from = Pollinator, values_from = interactions, values_fill = 0) %>%
+  column_to_rownames( var = "Plant")
+  ThisMix[is.na(ThisMix)] <- 0
+  ThisMix[ThisMix == 1] <- 0
   WHOLE_LIST[[i]] <- ThisMix
 }
 
-WHOLE_LIST1 <- lapply(WHOLE_LIST, function(df) {
-  mat <- as.matrix(df)
-  rownames(mat) <- rownames(df)  # preserve plant species names
-  return(mat)
+nested_values <- vector(length = length(WHOLE_LIST))
+for(i in seq_along(WHOLE_LIST)){
+  this.mat <- as.matrix(WHOLE_LIST[[i]])
+  this.mat <- apply(this.mat, 2, as.numeric)
+  rownames(this.mat) <- rownames(WHOLE_LIST[[i]])
+  nodf <- networklevel(bipartite::empty(this.mat), index = "NODF")
+    nested_values[i] <- nodf
+}
+
+set.seed(1)
+# vegan's oecosimu framework with quasiswap (fixed row & column sums)
+null_fun <- function(x) vegan::nestedtemp(x, index = "NODF", weighted = TRUE)$statistic
+
+standnull_nested_values <- lapply(WHOLE_LIST, function(nullmodel) {
+  oecosimu(nullmodel, null_fun,
+         method = "r2dtable", nsimul = 100)
 })
 
-WHOLE_LIST2 <- lapply(WHOLE_LIST1, function(df) {
-  # preserve names
-  rn <- rownames(df)
-  cn <- colnames(df)
-  
-  # convert to numeric matrix safely
-  mat <- matrix(as.numeric(unlist(df)), nrow = nrow(df), ncol = ncol(df))
-  
-  # restore names
-  rownames(mat) <- rn
-  colnames(mat) <- cn
-  
-  return(mat)
-})
-
-nestedness_values <- sapply(WHOLE_LIST2, function(mat) networklevel(mat, index = "weighted NODF"))
-
-
-df <- WHOLE_LIST2[[1]]
-mat <- matrix(as.numeric(unlist(df)), nrow=nrow(df), ncol=ncol(df))
-rownames(mat) <- rownames(df)
-colnames(mat) <- colnames(df)
-
-networklevel(mat, index="NODF")
 ```
 
