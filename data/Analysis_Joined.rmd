@@ -12,13 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
  Cleaning and joining pollinator data 
  
 ```{r cars}
-install.packages("bipartite")
+
 library(bipartite)
 library(dplyr)
 library(tidyr)
 library(tidyverse)
 library(tibble)
-install.packages("ggplot2")
 library(ggplot2)
 #veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
 #ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
@@ -99,6 +98,13 @@ standnull_nested_values <- lapply(WHOLE_LIST, function(nullmodel) {
   oecosimu(nullmodel, null_fun, method = "r2dtable", nsimul = 100)
 })
 names(standnull_nested_values) = names(WHOLE_LIST)
+
+nested_vec <- sapply(standnull_nested_values, function(x) unname(x$statistic))
+nestedness_values_df <- tibble(
+  name = names(nested_vec),
+  null_nestedness = unlist(nested_vec)
+) %>%
+  separate(name, into = c("stand", "mix", "date"), sep = "_", remove = TRUE)
 
 #creating a heat map of all communities 
 
