@@ -108,36 +108,90 @@ nestedness_values_df <- tibble(
 
 #creating a heat map of all communities 
 
- long_WHOLE_LIST <- map_df(names(WHOLE_LIST), function(Stand_Mix) {
-  map_mat <- WHOLE_LIST[[Stand_Mix]]
-  as.data.frame(map_mat) %>%
-    mutate(Plant = rownames(map_mat)) %>%
-    pivot_longer(
-      cols = -Plant,
-      names_to = "Pollinator",
-      values_to = "Interactions"
-    ) %>%
-    mutate(Network = Stand_Mix)
-})
- 
-long_WHOLE_LIST <- long_WHOLE_LIST %>%
-  mutate(Network = factor(Network, levels = names(WHOLE_LIST)))
+#  long_WHOLE_LIST <- map_df(names(WHOLE_LIST), function(Stand_Mix) {
+#   map_mat <- WHOLE_LIST[[Stand_Mix]]
+#   as.data.frame(map_mat) %>%
+#     mutate(Plant = rownames(map_mat)) %>%
+#     pivot_longer(
+#       cols = -Plant,
+#       names_to = "Pollinator",
+#       values_to = "Interactions"
+#     ) %>%
+#     mutate(Network = Stand_Mix)
+# })
+#  
+# long_WHOLE_LIST <- long_WHOLE_LIST %>%
+#   mutate(Network = factor(Network, levels = names(WHOLE_LIST)))
+# 
+# long_WHOLE_LIST <- long_WHOLE_LIST %>%
+#   unite("Network_Plant", Network, Plant, sep = " | ", remove = FALSE)
 
-long_WHOLE_LIST <- long_WHOLE_LIST %>%
-  unite("Network_Plant", Network, Plant, sep = " | ", remove = FALSE)
+# ggplot(long_WHOLE_LIST, aes(x = Pollinator, y = Network_Plant, fill = Interactions)) +
+#   geom_tile() +
+#   scale_fill_gradient(low = "springgreen", high = "springgreen4") +
+#   theme_minimal() +
+#   labs(
+#     x = "Pollinator",
+#     y = "Network | Plant",
+#     title = "All Plant–Pollinator Networks Combined Into One Heat Map"
+#   ) +
+#   theme(
+#     axis.text.x = element_text(angle = 45, hjust = 1),
+#     axis.text.y = element_text(size = 7)
+#   )
+```
 
-ggplot(long_WHOLE_LIST, aes(x = Pollinator, y = Network_Plant, fill = Interactions)) +
-  geom_tile() +
-  scale_fill_gradient(low = "springgreen", high = "springgreen4") +
-  theme_minimal() +
-  labs(
-    x = "Pollinator",
-    y = "Network | Plant",
-    title = "All Plant–Pollinator Networks Combined Into One Heat Map"
-  ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    axis.text.y = element_text(size = 7)
-  )
+prepare seed data 
+
+```{r}
+seed_count <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
+
+# rename mixes to match pollinator/data
+seed_count$Seed_Mix <- as.character(seed_count$Seed_Mix)
+seed_count$Seed_Mix[seed_count$Seed_Mix == 1] <- "Mix1"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 2] <- "Mix2"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 3] <- "Mix3"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 4] <- "Mix4"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 5] <- "Mix5"
+seed_count$Seed_Mix[seed_count$Seed_Mix == 6] <- "Mix6"
+
+# rename plants to match pollinator/data
+seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "CLAAMO"] <- "Clarkia amoena" seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies ==　"CLAPUR" ] <- "Clarkia purpurea"
+seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "GILCAP"] <- "Gilia capitata"
+seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "COLLIGRA"] <- "Collinsia grandiflora"
+seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "MADGRA"] <- "Madia gracilis"
+  
+  
+# rename columns and remove uneeded ones
+seed_count1 <- seed_count %>%
+  rename("Transect" = Seed_Mix, "Plant" = PlantGenusSpecies) %>%
+  subset(select = -c(X, Treatment)) %>%
+  filter(Plant != "MICGRA")
+
+# paste stand and mix and split seed data by these combos 
+seed_count1$Standsr1 <- paste(seed_count1$Stand, seed_count1$Transect, sep = "_")
+seed_df <- split(seed_count1, seed_count1$Standsr1, drop = FALSE)
+
+```
+
+Join null and actual nestedness
+
+```{r}
+# separtate vector into unique stand and mix and create data frame then 
+df_nested <- tibble(
+  name = nested_values_st) %>%
+  separate(name, into = c("stand", "mix", "date", "nestedness"), sep = "_", remove = TRUE)
+  
+# join null to actual 
+df_all <- df_nested %>%
+inner_join(nestedness_values_df)
+
+# find average for every stand and mix combo by averaging nestedness of different dates
+df_shorter_final1 <- df_all %>%
+  group_by(stand, mix) %>%
+  mutate(
+    nestedness = as.numeric(nestedness),
+    av_nestedness_actual = mean(nestedness, na.rm = TRUE), 
+    av_nestedness_null = mean(null_nestedness))
 ```
 
