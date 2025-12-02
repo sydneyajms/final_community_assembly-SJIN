@@ -18,6 +18,8 @@ library(dplyr)
 library(tidyr)
 library(tidyverse)
 library(tibble)
+install.packages("ggplot2")
+library(ggplot2)
 #veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
 #ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
 veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
@@ -72,6 +74,8 @@ for(i in seq_along(Stand_df)){
   WHOLE_LIST[[i]] <- ThisMix
 }
 
+names(WHOLE_LIST) <- names(Stand_df)
+
 nested_values <- vector(length = length(WHOLE_LIST))
 for(i in seq_along(WHOLE_LIST)){
   this.mat <- as.matrix(WHOLE_LIST[[i]])
@@ -86,9 +90,41 @@ set.seed(1)
 null_fun <- function(x) vegan::nestedtemp(x, index = "NODF", weighted = TRUE)$statistic
 
 standnull_nested_values <- lapply(WHOLE_LIST, function(nullmodel) {
-  oecosimu(nullmodel, null_fun,
-         method = "r2dtable", nsimul = 100)
+  oecosimu(nullmodel, null_fun, method = "r2dtable", nsimul = 100)
 })
 
+#creating a heat map of all communities 
+
+ long_WHOLE_LIST <- map_df(names(WHOLE_LIST), function(Stand_Mix) {
+  map_mat <- WHOLE_LIST[[Stand_Mix]]
+  as.data.frame(map_mat) %>%
+    mutate(Plant = rownames(map_mat)) %>%
+    pivot_longer(
+      cols = -Plant,
+      names_to = "Pollinator",
+      values_to = "Interactions"
+    ) %>%
+    mutate(Network = Stand_Mix)
+})
+ 
+long_WHOLE_LIST <- long_WHOLE_LIST %>%
+  mutate(Network = factor(Network, levels = names(WHOLE_LIST)))
+
+long_WHOLE_LIST <- long_WHOLE_LIST %>%
+  unite("Network_Plant", Network, Plant, sep = " | ", remove = FALSE)
+
+ggplot(long_WHOLE_LIST, aes(x = Pollinator, y = Network_Plant, fill = Interactions)) +
+  geom_tile() +
+  scale_fill_gradient(low = "springgreen", high = "springgreen4") +
+  theme_minimal() +
+  labs(
+    x = "Pollinator",
+    y = "Network | Plant",
+    title = "All Plant–Pollinator Networks Combined Into One Heat Map"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 7)
+  )
 ```
 
