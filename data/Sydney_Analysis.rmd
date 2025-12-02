@@ -55,13 +55,6 @@ all_plants <- unique(unlist(lapply(Stand_df, function(df) df$Plant)))
 all_pollinators <- unique(unlist(lapply(Stand_df, function(df) df$Pollinator)))
 
 # Make each community into adjacency matrix stored in a list - for loop retaining no of rows/col
-# 
-# Stand_df_mat <- vector("list", length = length(Stand_df))
-# for(i in seq_along(Stand_df)){
-# this.mat <- as.matrix(Stand_df[[i]])
-#   rownames(this.mat) <- rownames(Stand_df[[i]])
-#   Stand_df_mat[[i]] <- this.mat
-# }
 
 WHOLE_LIST <- vector("list", length = length(Stand_df))
 for(i in seq_along(Stand_df)){
@@ -75,16 +68,21 @@ for(i in seq_along(Stand_df)){
   ThisMix[is.na(ThisMix)] <- 0
   ThisMix[ThisMix == 1] <- 0
   WHOLE_LIST[[i]] <- ThisMix
+  names(WHOLE_LIST) <- names(Stand_df)
 }
 
 nested_values <- vector(length = length(WHOLE_LIST))
 for(i in seq_along(WHOLE_LIST)){
   this.mat <- as.matrix(WHOLE_LIST[[i]])
+  empty(this.mat, count = FALSE)
   rownames(this.mat) <- rownames(WHOLE_LIST[[i]])
-  nodf <- networklevel(this.mat, index = "nestedness")
-    nested_values[[i]] <- nodf
+  nodf <- networklevel(this.mat, index = "NODF")
+  nested_values[[i]] <- round(nodf, digits = 3)
 }
 
+nested_values_st <- paste(names(WHOLE_LIST), nested_values, sep = "_")
+#head(nested_values_st)
 
+seed_count <- read.csv()
 ```
 
