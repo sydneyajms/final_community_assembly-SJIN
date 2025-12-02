@@ -85,6 +85,12 @@ for(i in seq_along(WHOLE_LIST)){
 nested_values_st <- paste(names(WHOLE_LIST), nested_values, sep = "_")
 head(nested_values_st)
 
+```
+
+Create null model: 
+
+``` {r}
+
 set.seed(1)
 # vegan's oecosimu framework with quasiswap (fixed row & column sums)
 null_fun <- function(x) vegan::nestedtemp(x, index = "NODF", weighted = TRUE)$statistic
