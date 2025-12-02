@@ -37,7 +37,6 @@ ints1 <- ints %>%
   separate(col = Stand, into = c("Year1", "Stand"), sep = "_") %>%
   separate(col = Stand, into = c("Stand", "Site"), sep = ":") %>%
   filter(Stand == "604" | Stand == "605" | Stand == "607" | Stand == "611" | Stand == "700" | Stand ==     "702" | Stand == "704" | Stand == "705")
-  #subset(Stand = c("604","605","607","611","700","702","704","705"))
 
 both_data1 <- ints1 %>%
   inner_join(veg_data, by = "Stand", relationship = "many-to-many") %>%
@@ -48,7 +47,7 @@ both_data1 <- ints1 %>%
 #Remove extra plant data 
 both_data1$PlantGenusSpecies.x <- NULL
 #merge stand and sampling round 
-both_data1$Standsr <- paste(both_data1$Stand, both_data1$Date, both_data1$Transect, sep = "_")
+both_data1$Standsr <- paste(both_data1$Stand, both_data1$Transect, both_data1$Date, sep = "_")
 
 #Split all data into each stand
 Stand_df <- split(both_data1, both_data1$Standsr, drop = FALSE)
@@ -58,7 +57,6 @@ all_plants <- unique(unlist(lapply(Stand_df, function(df) df$Plant)))
 all_pollinators <- unique(unlist(lapply(Stand_df, function(df) df$Pollinator)))
 
 # Make each community into adjacency matrix stored in a list - for loop retaining no of rows/col
-# 
 
 WHOLE_LIST <- vector("list", length = length(Stand_df))
 for(i in seq_along(Stand_df)){
@@ -72,18 +70,20 @@ for(i in seq_along(Stand_df)){
   ThisMix[is.na(ThisMix)] <- 0
   ThisMix[ThisMix == 1] <- 0
   WHOLE_LIST[[i]] <- ThisMix
+  names(WHOLE_LIST) <- names(Stand_df)
 }
-
-names(WHOLE_LIST) <- names(Stand_df)
 
 nested_values <- vector(length = length(WHOLE_LIST))
 for(i in seq_along(WHOLE_LIST)){
   this.mat <- as.matrix(WHOLE_LIST[[i]])
-  this.mat <- apply(this.mat, 2, as.numeric)
+  empty(this.mat, count = FALSE)
   rownames(this.mat) <- rownames(WHOLE_LIST[[i]])
-  nodf <- networklevel(bipartite::empty(this.mat), index = "NODF")
-    nested_values[i] <- nodf
+  nodf <- networklevel(this.mat, index = "NODF")
+  nested_values[[i]] <- round(nodf, digits = 3)
 }
+
+nested_values_st <- paste(names(WHOLE_LIST), nested_values, sep = "_")
+head(nested_values_st)
 
 set.seed(1)
 # vegan's oecosimu framework with quasiswap (fixed row & column sums)
