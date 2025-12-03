@@ -205,6 +205,9 @@ nestedness_av_final$Standsr1 <- paste(nestedness_av_final$stand, nestedness_av_f
 nestedness_av_final$stand <- NULL
 nestedness_av_final$mix <- NULL
 
+nestedness_av_final <- nestedness_av_final %>%
+  filter(Standsr1 != "605_Mix2") # this row was ommitted in the seed data and thus is extra
+
 write.csv(nestedness_av_final, "nestedness_av_final.csv", row.names = FALSE)
 
 ```

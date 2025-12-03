@@ -170,7 +170,13 @@ seed_count1 <- seed_count %>%
 
 # paste stand and mix and split seed data by these combos 
 seed_count1$Standsr1 <- paste(seed_count1$Stand, seed_count1$Transect, sep = "_")
-seed_df <- split(seed_count1, seed_count1$Standsr1, drop = FALSE)
+seed_count_open <- seed_count1 %>%
+  group_by(Standsr1) %>%
+  summarise(av_OSeeds_Per_Bloom = mean(OSeeds_Per_Bloom))
+
+seed_count_closed <- seed_count1 %>%
+  group_by(Standsr1) %>%
+  summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
 
 ```
 
@@ -187,11 +193,20 @@ df_all <- df_nested %>%
 inner_join(nestedness_values_df)
 
 # find average for every stand and mix combo by averaging nestedness of different dates
-df_shorter_final1 <- df_all %>%
+nestedness_av_final <- df_all %>%
   group_by(stand, mix) %>%
-  mutate(
-    nestedness = as.numeric(nestedness),
+  mutate(nestedness = as.numeric(nestedness)) %>%
+  summarise(
     av_nestedness_actual = mean(nestedness, na.rm = TRUE), 
     av_nestedness_null = mean(null_nestedness))
+
+nestedness_av_final$Standsr1 <- paste(nestedness_av_final$stand, nestedness_av_final$mix, sep = "_")
+nestedness_av_final$stand <- NULL
+nestedness_av_final$mix <- NULL
+
+nestedness_av_final <- nestedness_av_final %>%
+  filter(Standsr1 != "605_Mix2") # this row was ommitted in the seed data and thus is extra
+
+write.csv(nestedness_av_final, "nestedness_av_final.csv", row.names = FALSE)
 ```
 
