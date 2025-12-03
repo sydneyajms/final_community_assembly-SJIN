@@ -222,7 +222,7 @@ final_df2 <- right_join(final_df1, seed_count_closed, by = "Standsr1")
 final_df <- final_df2 %>%
   select(Standsr1, av_OSeeds_Per_Bloom, av_CSeeds_Per_Bloom, av_nestedness_actual, av_nestedness_null)
 
-
+write.csv(final_df, "final_df", row.names = FALSE)
 ```
 
 
