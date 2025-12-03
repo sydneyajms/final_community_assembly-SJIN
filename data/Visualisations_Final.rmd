@@ -1,0 +1,62 @@
+---
+title: "Visualisations_Final"
+output: html_document
+date: "2025-12-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Create Network visualization 
+
+```{r}
+# Manipulate whole list to have only 47 communities like the other dfs
+
+WHOLE_LIST_vis <- 
+
+  # Convert to igraph bipartite adjacency matrix for every community, find modules
+
+network_BA_matrix <- vector("list", length = length(WHOLE_LIST_vis))
+for(i in seq_along(WHOLE_LIST_vis)){
+  network.mat <- as.matrix(WHOLE_LIST_vis[[i]])
+  empty(network.mat, count = FALSE)
+  rownames(network.mat) <- rownames(WHOLE_LIST_vis[[i]])
+  network_BA_matrix[[i]] <- graph_from_biadjacency_matrix(network.mat,
+                                           weighted =TRUE) 
+  modules[[i]] <- cluster_walktrap(network_BA_matrix[[i]]) # find modules
+  groups[[i]] <- membership(modules[[i]]) # assign vertices to modules
+  network_net3d <- igraph_to_networkD3(network_BA_matrix[[i]], groups[[i]]=groups[[i]], 
+                                       what = "both") # convert to a network 3d object
+
+
+  # ### find modules
+# mod_osmia <- cluster_walktrap(g_osmia)
+# ### assign vertices to modules
+# groups <- membership(mod_osmia)
+# 
+# ### convert to a network 3d object
+# g_osmia_net3d <- igraph_to_networkD3(g_osmia, group=groups, 
+#                                        what = "both")
+# ### plot the osmia-plant network
+# forceNetwork(Links = g_osmia_net3d$links,
+#              Nodes = g_osmia_net3d$nodes,
+#             Source = "source", Target = "target",
+#             Value = "value",  NodeID = "name",
+#              Group = "group", 
+#             opacity = 0.8, zoom=TRUE, opacityNoHover = 0.9)
+# 
+# sankeyNetwork(Links = g_osmia_net3d$links,
+#              Nodes = g_osmia_net3d$nodes,
+#             Source = "source", Target = "target",
+#             Value = "value",  NodeID = "name", 
+#             nodePadding = 0, height = 5000)
+```
+
+
+Create scatter/line plot to show seed vs nestedness 
+
+```{r}
+
+```
+
