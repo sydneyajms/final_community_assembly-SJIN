@@ -64,8 +64,10 @@ Create scatter/line plot to show seed vs nestedness
 ```{r}
 final_data <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/final_df")
 
+
 final_data2 <- final_data %>%
-  separate(Standsr1, into = c("Stand", "Mix"), sep = "_") %>%
+#  separate(Standsr1, into = c("Stand", "Mix"), sep = "_") %>%
+#  group_by(Mix) %>%
   mutate(
     PollinationBenefit = av_OSeeds_Per_Bloom - av_CSeeds_Per_Bloom
   )
@@ -74,16 +76,25 @@ lm_POLLINATORBENEFITvNESTEDNESS <- lm(PollinationBenefit ~ av_nestedness_null * 
 summary(lm_POLLINATORBENEFITvNESTEDNESS)
 anova(lm_POLLINATORBENEFITvNESTEDNESS)
 
-ggplot(final_data2, aes(x = av_nestedness_null, y = PollinationBenefit, color = Mix)) +
-  geom_point(size = 3) +
+ggplot(final_data2, aes(x = av_nestedness_null, y = PollinationBenefit, color = mix)) +
+  geom_bar() +
   geom_smooth(method = "lm", se = TRUE, color = "black") +
-  facet_wrap(~ Mix) +
   theme_bw() +
   labs(
     title = "Relationship Between Nestedness and Seed Set",
     x = "Standardized Nestedness",
     y = "Seed Set"
   )
+
+# ggplot(final_data2, aes(x = av_nestedness_null, y = PollinationBenefit, color = mix)) +
+#   geom_point(size = 3) +
+#   geom_smooth(method = "lm", se = TRUE, color = "black") +
+#   theme_bw() +
+#   labs(
+#     title = "Relationship Between Nestedness and Seed Set",
+#     x = "Standardized Nestedness",
+#     y = "Seed Set"
+#   )
 
 ```
 
