@@ -106,39 +106,6 @@ nestedness_values_df <- tibble(
 ) %>%
   separate(name, into = c("stand", "mix", "date"), sep = "_", remove = TRUE)
 
-#creating a heat map of all communities 
-
-#  long_WHOLE_LIST <- map_df(names(WHOLE_LIST), function(Stand_Mix) {
-#   map_mat <- WHOLE_LIST[[Stand_Mix]]
-#   as.data.frame(map_mat) %>%
-#     mutate(Plant = rownames(map_mat)) %>%
-#     pivot_longer(
-#       cols = -Plant,
-#       names_to = "Pollinator",
-#       values_to = "Interactions"
-#     ) %>%
-#     mutate(Network = Stand_Mix)
-# })
-#  
-# long_WHOLE_LIST <- long_WHOLE_LIST %>%
-#   mutate(Network = factor(Network, levels = names(WHOLE_LIST)))
-# 
-# long_WHOLE_LIST <- long_WHOLE_LIST %>%
-#   unite("Network_Plant", Network, Plant, sep = " | ", remove = FALSE)
-
-# ggplot(long_WHOLE_LIST, aes(x = Pollinator, y = Network_Plant, fill = Interactions)) +
-#   geom_tile() +
-#   scale_fill_gradient(low = "springgreen", high = "springgreen4") +
-#   theme_minimal() +
-#   labs(
-#     x = "Pollinator",
-#     y = "Network | Plant",
-#     title = "All Plant–Pollinator Networks Combined Into One Heat Map"
-#   ) +
-#   theme(
-#     axis.text.x = element_text(angle = 45, hjust = 1),
-#     axis.text.y = element_text(size = 7)
-#   )
 ```
 
 prepare seed data 
@@ -168,7 +135,7 @@ seed_count1 <- seed_count %>%
   subset(select = -c(X, Treatment)) %>%
   filter(Plant != "MICGRA")
 
-# paste stand and mix and split seed data by these combos 
+# paste stand and mix and split seed data by these combos (option 1)
 seed_count1$Standsr1 <- paste(seed_count1$Stand, seed_count1$Transect, sep = "_")
 seed_count_open <- seed_count1 %>%
   group_by(Standsr1) %>%
@@ -178,18 +145,27 @@ seed_count_closed <- seed_count1 %>%
   group_by(Standsr1) %>%
   summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
 
+# try averaging by mix instead (option 2)
+seed_count_open_MIX <- seed_count1 %>%
+  group_by(Transect) %>%
+  summarise(av_OSeeds_Per_Bloom = mean(OSeeds_Per_Bloom))
+
+seed_count_closed_MIX <- seed_count1 %>%
+  group_by(Transect) %>%
+  summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
+
 
 ```
 
-Join null and actual nestedness
+Join null and actual nestedness grouped by stand and mix combo 
 
 ```{r}
-# separtate vector into unique stand and mix and create data frame then 
+# separtate vector into unique stand and mix and create data frame then (RUN FOR BOTH)
 df_nested <- tibble(
   name = nested_values_st) %>%
   separate(name, into = c("stand", "mix", "date", "nestedness"), sep = "_", remove = TRUE)
   
-# join null to actual 
+# join null to actual (RUN FOR BOTH)
 df_all <- df_nested %>%
 inner_join(nestedness_values_df)
 
@@ -211,6 +187,28 @@ nestedness_av_final <- nestedness_av_final %>%
 write.csv(nestedness_av_final, "nestedness_av_final.csv", row.names = FALSE)
 
 ```
+Join null and actual nestedness grouped by mix 
+
+```{r}
+# find average for every stand and mix combo by averaging nestedness of different dates
+nestedness_av_final_byMIX <- df_all %>%
+  group_by(mix) %>%
+  mutate(nestedness = as.numeric(nestedness)) %>%
+  summarise(
+    av_nestedness_actual = mean(nestedness, na.rm = TRUE), 
+    av_nestedness_null = mean(null_nestedness))
+
+#nestedness_av_final$Standsr1 <- paste(nestedness_av_final$stand, nestedness_av_final$mix, sep = "_")
+nestedness_av_final_byMIX$Stand <- NULL
+nestedness_av_final_byMIX$Standsr1 <- NULL
+
+nestedness_av_final <- nestedness_av_final %>%
+  filter(Standsr1 != "605_Mix2") # this row was ommitted in the seed data and thus is extra
+
+write.csv(nestedness_av_final_byMIX, "nestedness_av_final_byMIX.csv", row.names = FALSE)
+```
+```
+
 
 ```
 
