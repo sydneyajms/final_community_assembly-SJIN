@@ -19,10 +19,10 @@ library(tidyr)
 library(tidyverse)
 library(tibble)
 library(ggplot2)
-#veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
-#ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
-veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
-ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
+veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
+ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
+# veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
+# ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
 
 veg_data <- veg %>%
   separate(col = Stand, into = c("Stand", "Loc"), sep = ":") %>%
@@ -155,7 +155,7 @@ seed_count$Seed_Mix[seed_count$Seed_Mix == 4] <- "Mix4"
 seed_count$Seed_Mix[seed_count$Seed_Mix == 5] <- "Mix5"
 seed_count$Seed_Mix[seed_count$Seed_Mix == 6] <- "Mix6"
 
-# rename plants to match pollinator/data
+# rename plants to match pollinator/data (run each row separtely nd it works even if red)
 seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "CLAAMO"] <- "Clarkia amoena" seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies ==　"CLAPUR" ] <- "Clarkia purpurea"
 seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "GILCAP"] <- "Gilia capitata"
 seed_count$PlantGenusSpecies[seed_count$PlantGenusSpecies == "COLLIGRA"] <- "Collinsia grandiflora"
@@ -209,4 +209,20 @@ nestedness_av_final <- nestedness_av_final %>%
 
 write.csv(nestedness_av_final, "nestedness_av_final.csv", row.names = FALSE)
 ```
+join nestedness and seed values 
+
+```{r}
+av_nestedness_final <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/nestedness_av_final.csv")
+
+# join open seeds data and closed seed data
+final_df1 <- right_join(av_nestedness_final, seed_count_open, by = "Standsr1")
+final_df2 <- right_join(final_df1, seed_count_closed, by = "Standsr1")
+
+# reorder columns for clarity 
+final_df <- final_df2 %>%
+  select(Standsr1, av_OSeeds_Per_Bloom, av_CSeeds_Per_Bloom, av_nestedness_actual, av_nestedness_null)
+
+
+```
+
 
