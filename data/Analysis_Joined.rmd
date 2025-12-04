@@ -74,6 +74,18 @@ for(i in seq_along(Stand_df)){
 
 saveRDS(WHOLE_LIST, file = "WHOLE_LIST.rds")
 
+WHOLE_LIST <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
+
+
+nested_values_byplant <- lapply(names(WHOLE_LIST_new), function(stand_mix) {
+  plant_mat <- WHOLE_LIST_new[[stand_mix]]
+  plant_metric <- specieslevel(plant_mat, level = "lower", index = "nestedrank")$lower
+  plant_metric <- as.data.frame(plant_metric) %>%
+    rownames_to_column("Plant") %>%
+    mutate(Network = stand_mix)
+  return(plant_metric)
+})
+
 nested_values <- vector(length = length(WHOLE_LIST))
 for(i in seq_along(WHOLE_LIST)){
   this.mat <- as.matrix(WHOLE_LIST[[i]])
@@ -253,6 +265,86 @@ final_dfMIX <- final_df2MIX %>%
   select(mix, av_OSeeds_Per_Bloom, av_CSeeds_Per_Bloom, av_nestedness_actual, av_nestedness_null)
 
 write.csv(final_dfMIX, "final_dfMIX.csv", row.names = FALSE)
+
+```
+
+
+data visualization:
+```{r}
+install.packages(c("igraph", "tidygraph", "ggraph", "ggplot2"))
+library(igraph)
+library(tidygraph)
+library(ggraph)
+library(ggplot2)
+library(scales)
+install.packages("ggeffects")
+library(ggeffects)
+library(effects)
+install.packages("interactions")
+library(interactions)
+
+WHOLE_LIST <- readRDS("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
+
+mix_vector <- str_split(names(WHOLE_LIST), "_", simplify = TRUE)[,2]
+list_by_mix <- split(WHOLE_LIST, mix_vector)
+  
+agg_by_mix <- lapply(list_by_mix, function(sublist) {
+  Reduce("+", sublist)   # adding adjacency matrices together
+})
+
+plot_all_mixes_heatmap <- function(mat_df) {
+  long_all <- map2_dfr(mat_df, names(mat_df), ~ .x %>%
+                          rownames_to_column("Plant") %>%
+                          pivot_longer(
+                            cols = -Plant,
+                            names_to = "Pollinator",
+                            values_to = "value"
+                          ) %>%
+                          mutate(Mix = .y))
+
+  ggplot(long_all, aes(x = Pollinator, y = Plant, fill = value)) +
+    geom_tile() +
+    scale_fill_gradient(low = "white", high = "darkgreen", trans = scales::sqrt_trans()) +
+    labs(fill = "Interaction") +
+    facet_wrap(~Mix, ncol = 3) +   # adjust ncol to control layout
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1, size = 4),
+      axis.text.y = element_text(size = 4),
+      axis.title = element_blank()
+    )
+}
+
+plot_all_mixes_heatmap(agg_by_mix)
+ggsave("heatmap_bymix.png", width = 6, height = 4, dpi = 300)
+
+#ANOVA visualization
+final_data <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/final_df")
+
+
+final_data2 <- final_data %>%
+  separate(Standsr1, into = c("Stand", "Mix"), sep = "_") %>%
+  group_by(Mix) %>%
+  mutate(
+    PollinationBenefit = av_OSeeds_Per_Bloom - av_CSeeds_Per_Bloom
+  )
+
+lm_POLLINATORBENEFITvNESTEDNESS <- lm(PollinationBenefit ~ av_nestedness_null * Mix, data = final_data2)
+predicted_vals <- ggeffect(lm_POLLINATORBENEFITvNESTEDNESS, terms = c("av_nestedness_null", "Mix"))
+
+ggplot(predicted_vals, aes(x = x, y = predicted, color = group)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(x = "Standardized Nestedness", y = "Predicted Seed Set", color = "Mix", fill = "Mix") +
+  theme_minimal()
+
+interact_plot(lm_POLLINATORBENEFITvNESTEDNESS, pred = av_nestedness_null, modx = Mix)
+
+
+
+
+summary(lm_POLLINATORBENEFITvNESTEDNESS)
+anova(lm_POLLINATORBENEFITvNESTEDNESS)
 
 ```
 
