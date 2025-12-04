@@ -131,7 +131,7 @@ ggplot(final_dfMIX_edit, aes(x = av_nestedness_null, y = PollinationBenefit, col
   geom_smooth(method = "lm", se = TRUE, color = "black") +
   theme_bw() +
   labs(
-    title = "Nestedness vs Seed Set Averaged by Mix",
+    title = "Nestedness vs Seed Set",
     x = "Standardized Nestedness",
     y = "Seed Set"
   )
