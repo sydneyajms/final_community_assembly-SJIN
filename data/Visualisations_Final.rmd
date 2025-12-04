@@ -124,7 +124,7 @@ final_dfMIX_edit <- final_dfMIX %>%
     PollinationBenefit = av_OSeeds_Per_Bloom - av_CSeeds_Per_Bloom,
     Mix = mix
   ) %>%
-  filter(mix == "Mix4" | mix == "Mix5")
+  filter(mix == "Mix4" | mix == "Mix5" | mix == "Mix1" | mix == "Mix2")
 
 ggplot(final_dfMIX_edit, aes(x = av_nestedness_null, y = PollinationBenefit, color = Mix)) +
   geom_point(size = 3) +
