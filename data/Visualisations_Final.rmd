@@ -58,7 +58,8 @@ for(i in seq_along(WHOLE_LIST_vis)){
 #             Value = "value",  NodeID = "name", 
 #             nodePadding = 0, height = 5000)
   
-WHOLE_LIST <- readRDS("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
+#WHOLE_LIST <- readRDS("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
+WHOLE_LIST <- readRDS("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
   
 agg_by_mix <- lapply(split(WHOLE_LIST, your_mix_vector), function(sublist) {
   Reduce("+", sublist)   # add adjacency matrices together
@@ -70,7 +71,8 @@ agg_by_mix <- lapply(split(WHOLE_LIST, your_mix_vector), function(sublist) {
 Create scatter/line plot to show seed vs nestedness 
 
 ```{r}
-final_data <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/final_df")
+#final_data <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/final_df")
+final_data <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/final_df")
 
 
 final_data2 <- final_data %>%
@@ -95,7 +97,8 @@ ggplot(final_data2, aes(x = av_nestedness_null, y = PollinationBenefit, color = 
   )
 ggsave("nestednessVseedset_bymix.png", width = 6, height = 4, dpi = 300)
 
-final_dfMIX <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/final_dfMIX.csv")
+#final_dfMIX <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/final_dfMIX.csv")
+final_dfMIX <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/final_dfMIX.csv")
 
 final_dfMIX <- final_dfMIX %>%
   mutate(
@@ -114,6 +117,25 @@ ggplot(final_dfMIX, aes(x = av_nestedness_null, y = PollinationBenefit, color = 
   )
 ggsave("nestednessVseedset_bymix.png", width = 6, height = 4, dpi = 300)
 
+# just plot mix 4 and 5 (highest and lowest nestedness)
+
+final_dfMIX_edit <- final_dfMIX %>%
+  mutate(
+    PollinationBenefit = av_OSeeds_Per_Bloom - av_CSeeds_Per_Bloom,
+    Mix = mix
+  ) %>%
+  filter(mix == "Mix4" | mix == "Mix5")
+
+ggplot(final_dfMIX_edit, aes(x = av_nestedness_null, y = PollinationBenefit, color = Mix)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  theme_bw() +
+  labs(
+    title = "Nestedness vs Seed Set Averaged by Mix",
+    x = "Standardized Nestedness",
+    y = "Seed Set"
+  )
+ggsave("nestednessVseedset_bymix.png", width = 6, height = 4, dpi = 300)
 
 ```
 
