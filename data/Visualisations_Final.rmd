@@ -10,6 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(dplyr)
 library(tidyverse)
+install.package(igraph)
+library(igraph)
+library(ggraph)
 
 ```
 
@@ -34,7 +37,6 @@ for(i in seq_along(WHOLE_LIST_vis)){
   network_net3d <- igraph_to_networkD3(network_BA_matrix[[i]], groups[[i]]=groups[[i]], 
                                        what = "both") # convert to a network 3d object
 
-
   # ### find modules
 # mod_osmia <- cluster_walktrap(g_osmia)
 # ### assign vertices to modules
@@ -56,6 +58,9 @@ for(i in seq_along(WHOLE_LIST_vis)){
 #             Source = "source", Target = "target",
 #             Value = "value",  NodeID = "name", 
 #             nodePadding = 0, height = 5000)
+  
+  
+
 ```
 
 
@@ -66,8 +71,8 @@ final_data <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly
 
 
 final_data2 <- final_data %>%
-#  separate(Standsr1, into = c("Stand", "Mix"), sep = "_") %>%
-#  group_by(Mix) %>%
+  separate(Standsr1, into = c("Stand", "Mix"), sep = "_") %>%
+  group_by(Mix) %>%
   mutate(
     PollinationBenefit = av_OSeeds_Per_Bloom - av_CSeeds_Per_Bloom
   )
@@ -76,25 +81,19 @@ lm_POLLINATORBENEFITvNESTEDNESS <- lm(PollinationBenefit ~ av_nestedness_null * 
 summary(lm_POLLINATORBENEFITvNESTEDNESS)
 anova(lm_POLLINATORBENEFITvNESTEDNESS)
 
-ggplot(final_data2, aes(x = av_nestedness_null, y = PollinationBenefit, color = mix)) +
-  geom_bar() +
+ggplot(final_data2, aes(x = av_nestedness_null, y = PollinationBenefit, color = Mix)) +
+  geom_point(size = 3) +
   geom_smooth(method = "lm", se = TRUE, color = "black") +
+  facet_wrap(~ Mix) +
   theme_bw() +
   labs(
     title = "Relationship Between Nestedness and Seed Set",
     x = "Standardized Nestedness",
     y = "Seed Set"
   )
+ggsave("nestednessVseedset_bymix.png", width = 6, height = 4, dpi = 300)
 
-# ggplot(final_data2, aes(x = av_nestedness_null, y = PollinationBenefit, color = mix)) +
-#   geom_point(size = 3) +
-#   geom_smooth(method = "lm", se = TRUE, color = "black") +
-#   theme_bw() +
-#   labs(
-#     title = "Relationship Between Nestedness and Seed Set",
-#     x = "Standardized Nestedness",
-#     y = "Seed Set"
-#   )
+
 
 ```
 

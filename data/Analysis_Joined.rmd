@@ -171,22 +171,22 @@ seed_count1 <- seed_count %>%
   filter(Plant != "MICGRA")
 
 # paste stand and mix and split seed data by these combos 
-#seed_count1$Standsr1 <- paste(seed_count1$Stand, seed_count1$Transect, sep = "_")
-#seed_count_open <- seed_count1 %>%
-#  group_by(Standsr1) %>%
-#  summarise(av_OSeeds_Per_Bloom = mean(OSeeds_Per_Bloom))
+seed_count1$Standsr1 <- paste(seed_count1$Stand, seed_count1$Transect, sep = "_")
+seed_count_open <- seed_count1 %>%
+  group_by(Standsr1) %>%
+  summarise(av_OSeeds_Per_Bloom = mean(OSeeds_Per_Bloom))
 
-#seed_count_closed <- seed_count1 %>%
-#  group_by(Standsr1) %>%
-#  summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
+seed_count_closed <- seed_count1 %>%
+  group_by(Standsr1) %>%
+  summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
 
 # try averaging by mix
-seed_count_open_MIX <- seed_count1 %>%
-  group_by(Transect) %>%
-  summarise(av_OSeeds_Per_Bloom = mean(OSeeds_Per_Bloom))
-seed_count_closed_MIX <- seed_count1 %>%
-  group_by(Transect) %>%
-  summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
+# seed_count_open_MIX <- seed_count1 %>%
+#   group_by(Transect) %>%
+#   summarise(av_OSeeds_Per_Bloom = mean(OSeeds_Per_Bloom))
+# seed_count_closed_MIX <- seed_count1 %>%
+#   group_by(Transect) %>%
+#   summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
 
 
 ```
@@ -205,13 +205,13 @@ inner_join(nestedness_values_df)
 
 # find average for every stand and mix combo by averaging nestedness of different dates
 nestedness_av_final <- df_all %>%
-  group_by(mix) %>%
+  group_by(stand, mix) %>%
   mutate(nestedness = as.numeric(nestedness)) %>%
   summarise(
     av_nestedness_actual = mean(nestedness, na.rm = TRUE), 
     av_nestedness_null = mean(null_nestedness))
 
-#nestedness_av_final$Standsr1 <- paste(nestedness_av_final$stand, nestedness_av_final$mix, sep = "_")
+nestedness_av_final$Standsr1 <- paste(nestedness_av_final$stand, nestedness_av_final$mix, sep = "_")
 nestedness_av_final$stand <- NULL
 nestedness_av_final$mix <- NULL
 
@@ -225,18 +225,14 @@ join nestedness and seed values
 ```{r}
 #av_nestedness_final <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/nestedness_av_final.csv")
 av_nestedness_final <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/nestedness_av_final.csv")
-seed_count_closed_MIX <- seed_count_closed_MIX %>%
-  rename("mix" = Transect)
-seed_count_open_MIX <- seed_count_open_MIX %>%
-  rename("mix" = Transect)
 
 # join open seeds data and closed seed data
-final_df1 <- right_join(av_nestedness_final, seed_count_open_MIX, by = "mix")
-final_df2 <- right_join(final_df1, seed_count_closed_MIX, by = "mix")
+final_df1 <- right_join(av_nestedness_final, seed_count_open, by = "Standsr1")
+final_df2 <- right_join(final_df1, seed_count_closed, by = "Standsr1")
 
 # reorder columns for clarity 
 final_df <- final_df2 %>%
-  select(mix, av_OSeeds_Per_Bloom, av_CSeeds_Per_Bloom, av_nestedness_actual, av_nestedness_null)
+  select(Standsr1, av_OSeeds_Per_Bloom, av_CSeeds_Per_Bloom, av_nestedness_actual, av_nestedness_null)
 
 write.csv(final_df, "final_df", row.names = FALSE)
 ```
