@@ -72,6 +72,8 @@ for(i in seq_along(Stand_df)){
   names(WHOLE_LIST) <- names(Stand_df)
 }
 
+saveRDS(WHOLE_LIST, file = "WHOLE_LIST.rds")
+
 nested_values <- vector(length = length(WHOLE_LIST))
 for(i in seq_along(WHOLE_LIST)){
   this.mat <- as.matrix(WHOLE_LIST[[i]])
@@ -180,13 +182,13 @@ seed_count_closed <- seed_count1 %>%
   group_by(Standsr1) %>%
   summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
 
-# try averaging by mix
-# seed_count_open_MIX <- seed_count1 %>%
-#   group_by(Transect) %>%
-#   summarise(av_OSeeds_Per_Bloom = mean(OSeeds_Per_Bloom))
-# seed_count_closed_MIX <- seed_count1 %>%
-#   group_by(Transect) %>%
-#   summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
+#try averaging by mix
+ seed_count_open_MIX <- seed_count1 %>%
+   group_by(Transect) %>%
+   summarise(av_OSeeds_Per_Bloom = mean(OSeeds_Per_Bloom))
+ seed_count_closed_MIX <- seed_count1 %>%
+   group_by(Transect) %>%
+   summarise(av_CSeeds_Per_Bloom = mean(CSeeds_Per_Bloom))
 
 
 ```
@@ -226,6 +228,8 @@ join nestedness and seed values
 #av_nestedness_final <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/nestedness_av_final.csv")
 av_nestedness_final <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/nestedness_av_final.csv")
 
+nestedness_av_final_byMIX <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/nestedness_av_final_byMIX.csv")
+
 # join open seeds data and closed seed data
 final_df1 <- right_join(av_nestedness_final, seed_count_open, by = "Standsr1")
 final_df2 <- right_join(final_df1, seed_count_closed, by = "Standsr1")
@@ -235,6 +239,20 @@ final_df <- final_df2 %>%
   select(Standsr1, av_OSeeds_Per_Bloom, av_CSeeds_Per_Bloom, av_nestedness_actual, av_nestedness_null)
 
 write.csv(final_df, "final_df", row.names = FALSE)
-```
 
+#doing the same thing with the by mix data
+
+names(seed_count_open_MIX)[names(seed_count_open_MIX) == "Transect"] <- "mix"
+names(seed_count_closed_MIX)[names(seed_count_closed_MIX) == "Transect"] <- "mix"
+# join open seeds data and closed seed data
+final_df1MIX <- right_join(nestedness_av_final_byMIX, seed_count_open_MIX, by = "mix")
+final_df2MIX <- right_join(final_df1MIX, seed_count_closed_MIX, by = "mix")
+
+# reorder columns for clarity 
+final_dfMIX <- final_df2MIX %>%
+  select(mix, av_OSeeds_Per_Bloom, av_CSeeds_Per_Bloom, av_nestedness_actual, av_nestedness_null)
+
+write.csv(final_dfMIX, "final_dfMIX.csv", row.names = FALSE)
+
+```
 
