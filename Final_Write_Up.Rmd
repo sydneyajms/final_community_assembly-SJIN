@@ -31,8 +31,12 @@ Therefore, the optimal, most nested plant assemblage for restoration will featur
   The data sets we used in this analysis were collected by members of the Hallett and Ponsio Labs at the University of Oregon at the Holiday Farm site from 2020 to 2024. In order to ensure our data was clean we used a linear regression, created from the relationship between bloom count and seed count of plants that were properly bagged to ensure seeds were collected, to generate seed count data based on the mass of the inflorescence of samples that were improperly bagged and therefore did not have counted seeds. 
 
 ```{r}
-#MICGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/ MICGRA.csv")
-MICGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/ MICGRA.csv")
+library(bipartite)
+library(dplyr)
+library(tidyr)
+library(tibble)
+MICGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/ MICGRA.csv")
+#MICGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/ MICGRA.csv")
 
 ## remove unuseful columns
 MICGRA <- subset(MICGRA1, select = -c(S, Herbivory, X, Herbivory.1, X.1, ONotes, CNotes, Opods, Cpods))
@@ -60,8 +64,8 @@ MICGRA <- MICGRA %>%
           "Treatment" = genSpec,
           "PlantGenusSpecies" = Sp)  
 
-#GILCAP1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GILCAP.csv")
-GILCAP1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GILCAP.csv")
+GILCAP1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GILCAP.csv")
+#GILCAP1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GILCAP.csv")
 
 ## remove unuseful columns
 GILCAP <- subset(GILCAP1, select = -c(S, Herbivory, OflwrsGood, OflwrsBad, OseedsBad, OseedsGood, Omass, Herbivory.1, CflwrsGood, CflwrsBad, CseedsBad, CseedsGood, Cmass, notesOpen, notesClosed, Opods, Cpods, X))
@@ -89,8 +93,8 @@ GILCAP <- GILCAP %>%
           "Treatment" = genSpec,
           "PlantGenusSpecies" = Sp)  
 
-#GLTCCOLLIGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
-GLTCCOLLIGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+GLTCCOLLIGRA1 <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
+#GLTCCOLLIGRA1 <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/GLTCCOLLIGRA.csv")
 
 ## remove unuseful columns
 GLTCCOLLIGRA <- subset(GLTCCOLLIGRA1, select = -c(S, OseedsGood, OseedsBad, Ocomplete., OemptyInflorMass, CseedsGood, CseedsBad, Ccomplete., CemptyInflorMass, notesOpen, notesClosed, X, X.1, X.2, X.3, X.4, X.5))
@@ -489,7 +493,7 @@ Om <- model$coefficients[2]
 ##subset data to get rows that have mass but dont have seeds
 OnoSeeds_yesMass <- subset(WWMADGRA, OSeeds == 0 | is.na(OSeeds) & Omass != 0)
 ## get the mass column for the regression
-Ox <- OnoSeeds_yesMass$Omass
+Ox <- as.numeric(OnoSeeds_yesMass$Omass)
 Oy <- Om*Ox+Ob
 ##fill in empty rows
 OnoSeeds_yesMass$OSeeds <- Oy
@@ -530,7 +534,7 @@ cleaned_WWMADGRA <- cleaned_WWMADGRA %>%
 
 #adding seeds per bloom 
 cleaned_WWMADGRA <- cleaned_WWMADGRA %>%
-  mutate(OSeeds_Per_Bloom = OSeeds/Oblooms,
+  mutate(OSeeds_Per_Bloom = OSeeds/as.numeric(Oblooms),
          CSeeds_Per_Bloom = CSeeds/Cblooms)
 #drop remaining NAs 
 cleaned_WWMADGRA <- cleaned_WWMADGRA %>%
@@ -563,10 +567,10 @@ write.csv(All_Cleaned_Data, "/Users/sydneyjames/OneDrive_UniversityofOregon/fina
   Our pollinator interaction data was provided by the Ponisio lab and included two data sets, one which featured vegetation data and one which provided the pollinator interactions for each plant. We filtered the entire pollinator interaction data set to only include one year of post-fire data (2024) to best match our seed data timeline, and joined these data frames together by each stand, mix, and collection date combination to create a list of adjacency matrices containing all possible plant pollinator interactions. 
   
 ```{r}
-#veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
-#ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
- veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
- ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
+veg <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/veg.csv")
+ints <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
+ #veg <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/veg.csv")
+ #ints <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/Holiday_PP_Interaction.csv")
 
 veg_data <- veg %>%
   separate(col = Stand, into = c("Stand", "Loc"), sep = ":") %>%
@@ -615,16 +619,6 @@ for(i in seq_along(Stand_df)){
   names(WHOLE_LIST) <- names(Stand_df)
 }
 
-saveRDS(WHOLE_LIST, file = "WHOLE_LIST.rds")
-
-WHOLE_LIST <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
-```
-
-#DATA MANIPULATION
-Using the bipartide package, we calculated network-level weighted nestedness for each plant pollinator interaction matrix . In addition, we used the function oecosimu which creates a null model, and compares each interaction  matrix to give us a scaled comparable value to represent nestedness when investigating the relationship to reproductive productivity. Reproductive productivity was represented by the pollinator benefit of each plant, which was calculated by subtracting the seed set of open flowers from that of the closed flowers, indicating the reproductive benefit each flower gained from pollination. These values were averaged for each stand and mix combination, and for each mix across all stands, resulting in a final data frame containing standardized nestedness and pollinator benefit for each stand and mix combination. As Dr Ponisio taught us, we used clear commenting and chunks in our code to ensure the reproducibility of our analyses and cleaning, especially as beginner data scientists. This not only makes it easier for readers to understand the purpose of specific chunks, but really helped when we were working on different sections of the data, and needed to combine our work. 
-
-```{r}
-#creating nestedness value for each adjacency matrix
 nested_values <- vector(length = length(WHOLE_LIST))
 for(i in seq_along(WHOLE_LIST)){
   this.mat <- as.matrix(WHOLE_LIST[[i]])
@@ -633,9 +627,23 @@ for(i in seq_along(WHOLE_LIST)){
   nodf <- networklevel(this.mat, index = "NODF")
   nested_values[[i]] <- round(nodf, digits = 3)
 }
-#ensuring the stand_mix_date data is kept in the name of the new list
+
 nested_values_st <- paste(names(WHOLE_LIST), nested_values, sep = "_")
 head(nested_values_st)
+
+
+saveRDS(WHOLE_LIST, file = "WHOLE_LIST.rds")
+
+
+#WHOLE_LIST <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
+WHOLE_LIST <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
+
+```
+
+#DATA MANIPULATION
+Using the bipartide package, we calculated network-level weighted nestedness for each plant pollinator interaction matrix . In addition, we used the function oecosimu which creates a null model, and compares each interaction  matrix to give us a scaled comparable value to represent nestedness when investigating the relationship to reproductive productivity. Reproductive productivity was represented by the pollinator benefit of each plant, which was calculated by subtracting the seed set of open flowers from that of the closed flowers, indicating the reproductive benefit each flower gained from pollination. These values were averaged for each stand and mix combination, and for each mix across all stands, resulting in a final data frame containing standardized nestedness and pollinator benefit for each stand and mix combination. As Dr Ponisio taught us, we used clear commenting and chunks in our code to ensure the reproducibility of our analyses and cleaning, especially as beginner data scientists. This not only makes it easier for readers to understand the purpose of specific chunks, but really helped when we were working on different sections of the data, and needed to combine our work. 
+
+```{r}
 
 set.seed(1)
 # vegan's oecosimu framework with quasiswap (fixed row & column sums)
@@ -655,8 +663,8 @@ nestedness_values_df <- tibble(
   separate(name, into = c("stand", "mix", "date"), sep = "_", remove = TRUE)
 
 #preparing seed data for joining
-#seed_count <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
-seed_count <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
+seed_count <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/All_Cleaned_Data")
+#seed_count <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/All_Cleaned_Data")
 
 # rename mixes to match pollinator/data
 seed_count$Seed_Mix <- as.character(seed_count$Seed_Mix)
@@ -725,10 +733,11 @@ nestedness_av_final <- nestedness_av_final %>%
 
 write.csv(nestedness_av_final, "nestedness_av_final.csv", row.names = FALSE)
 
-#av_nestedness_final <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/nestedness_av_final.csv")
-av_nestedness_final <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/nestedness_av_final.csv")
+av_nestedness_final <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/nestedness_av_final.csv")
+#av_nestedness_final <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/nestedness_av_final.csv")
 
-nestedness_av_final_byMIX <- read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/nestedness_av_final_byMIX.csv")
+nestedness_av_final_byMIX <- #read.csv("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/nestedness_av_final_byMIX.csv")
+read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/nestedness_av_final_byMIX.csv")
 
 # join open seeds data and closed seed data
 final_df1 <- right_join(av_nestedness_final, seed_count_open, by = "Standsr1")
@@ -835,7 +844,8 @@ ggsave("nestednessVseedset_bymix.png", width = 6, height = 4, dpi = 300)
   We also created a heat map using our list of plant pollinator adjacency matrices to create a visual representation of nesting patterns within each mix. 
   
 ```{r}
-WHOLE_LIST <- readRDS("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
+#WHOLE_LIST <- readRDS("/Users/isabellenollette/Desktop/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
+WHOLE_LIST <- readRDS("/Users/sydneyjames/OneDrive_UniversityofOregon/final_community_assembly-SJIN/data/WHOLE_LIST.rds")
 
 mix_vector <- str_split(names(WHOLE_LIST), "_", simplify = TRUE)[,2]
 list_by_mix <- split(WHOLE_LIST, mix_vector)
