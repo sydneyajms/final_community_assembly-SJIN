@@ -7,17 +7,24 @@ bibliography: references.bib
 ---
 
 #INTRODUCTION
-  It is widely understood that plant-pollinator interactions are a key driver of community assembly and species establishment in any ecosystem. Thus, knowing which of these interactions will promote positive species coexistence by enhancing reproductive success is critical to ensuring population persistence in the face of an ever-changing environment (Moeller). Existing literature in the field of community assembly has focused on how direct interactions among plants (e.g. competition for resources) and abiotic factors (e.g. soil moisture) influence their persistence in a particular habitat (@Sargent). Moreover, studies predicting how community and species characteristics such as niche overlaps, specialization, trait divergence and distribution, and phylogenetics influence patterns of species co-occurrence and persistence within a community are not uncommon (@Moeller, @Ponisio, @Sargent, @Slingsby, J.A.). However, this research has little consideration for the role of plant-animal interactions in the greater community focusing instead on the scale of direct plant-animal interactions, rather than that of the local pollinator networks as a potential habitat filter and driver of plant fitness. 
+  It is widely understood that plant-pollinator interactions are a key driver of community assembly and species establishment, as greater reproductive success is known to be positively correlated to effective pollination, increasing overall ecosystem productivity
+Thus, knowing which of these interactions will promote positive species coexistence by enhancing reproductive success is critical to ensuring population persistence in the face of an ever-changing environment (Moeller). 
+This is especially important in the context of  Wetland prairies, which are a critical part of the Oregon ecosystem. Not only are they biodiversity hotspots, but they also improve water quality, recharge groundwater, reduce flood severity, and support breeding and migrating wildlife. However, almost all remaining Willamette Valley prairies have been degraded by human pollution, invasive species, and altered water regimes. Thus, the need for restoration is unquestionably important. The role of pollinators is critical to the reproductive success of plant communities, and has delicate margins in doing so. Thus, research and data analysis such as this project can strengthen existing knowledge on community assembly and pollinator community composition, better informing specific restoration efforts, to prioritise the most productive community assemblages and have a meaningful impact on degraded landscapes like the wet prairies in the Willamette Valley. 
 
-  Many of these studies explore the dynamics of these plant-pollinator interactions as a driver of species richness (Memtsas), where the objective is often community resilience to an external stressor. Such resilience is usually correlated to the structure of specialists and generalists of both plants and pollinators within a community. Abundance of generalist pollinators is often high (Moeller) and advances the transfer of pollen between plants; however, some degree of specialization is necessary for successful pollination for flowers requiring conspecific pollen (Brosi). This characteristic of community structure is usually defined as the level of nestedness - the tendency for specialists to interact with subsets of the species that generalists interact with. It is thought that a perfectly nested community is the most resilient (Brosi). Highly specialized systems like the fiscus trees and their wasp pollinators experience a trade-off between high reproductive success and low resilience, therefore experiencing a low level of nestedness. (Shanahan). 
-  
-  Through deeper analysis of this existing literature, we can gain an understanding of current plant-pollinator network dynamics, where specialist pollinators are often found in greater abundance yet with lower diversity, and the inverse is true for generalist (@Moeller). These dynamics can also be understood as a metric of nestedness, which encompasses the specialization of plants and pollinators as a vector of species richness, and therefore can add to our understanding of the drivers behind reproductive success in these plant-pollinator networks. Additionally, we know that plant species with similar flowering phenologies and floral morphologies may compete for pollination, consequently making pollinator effectiveness and occurrence a driver of reproductive success in communities with congeners (@Bell). There is also a wealth of research that outlines the two potential mechanisms of competition for pollination, as pollinator preference and improper pollen transfer, where the latter occurs when heterospecific pollen is deposited on stigmas of one or both competitors. Both of these mechanisms are important factors in plant-pollinator networks as they can be confounding on reproductive success, and limit the extent to which congeners can beneficially coexist (@Bell). 
-  
-  Surveys of floral visitor communities across large geographic ranges to examine the network of pollinators and their contribution to community assembly are frequent and provide a strong framework for the methods of this study. Differently, the data for this project allows for the examination of pollination effectiveness at a smaller spatial scale, and focuses analysis in communities native to a defined ecoregion to enhance targeted restoration efforts in areas such as Wetland prairies which are a critical part of the Oregon ecosystem. Wetland prairies are biodiversity hotspots that improve water quality, recharge groundwater, reduce flood severity, and support breeding and migrating wildlife. However, almost all remaining Willamette Valley prairies have been degraded by human pollution, invasive species, and altered water regimes. Thus, the need for restoration is unquestionably important. The role of pollinators is critical to the reproductive success of plant communities, and has delicate margins in doing so. Greater reproductive success within a plant community is known to be positively correlated to effective pollination, increasing overall ecosystem productivity and ultimately having a more meaningful impact on degraded landscapes like the wet prairies in the Willamette Valley. Thus, research and data analysis such as this project can strengthen existing knowledge on community assembly and pollinator community composition, better informing specific restoration efforts, to prioritize the most productive community assemblages.
+Existing literature in the field of community assembly has focused on how direct interactions among plants (e.g. competition for resources) and abiotic factors (e.g. soil moisture) influence their persistence in a particular habitat (@Sargent). Moreover, studies predicting how community and species characteristics such as niche overlaps, specialisation, trait divergence and distribution, and phylogenetics influence patterns of species co-occurrence and persistence within a community are not uncommon (@Moeller, @Ponisio, @Sargent, @Slingsby, J.A.). 
+However, this research has little consideration for the role of plant-animal interactions in the greater community context, particularly that of the local pollinator networks as a potential habitat filter and driver of plant fitness. Instead, focus is often on the scale of direct plant-animal interactions. 
 
-  Our analysis targets this gap in more depth, by investigating the reproductive success as an output of nestedness. We aim to grow scienfitic understanding about the trade-off between resilience and reproductive success as it promotes community population persistence in different community assemblies. Understanding research done by @Moeller @Brosi on the structure of specialization in pollinator communities visiting Clarkia allowed us to investigate the relationship between nestedness and reproductive success of similar systems with an informed understanding of the community assemblages and underlying ecosystem dynamics. Building upon the understanding that the difference in pollinator communities between plant communities is due to the proportion of specialists versus generalists, rather than diversity, we formulated our questions we will be exploring using our data and analysis: Which community assemblages result in the greatest amount of nestedness among plant pollinator networks? How does nestedness impact reproductive success of plants within these networks? Which plant-pollinator community will lead to the greatest reproductive success and what are the conservation implications of this?
+Many of these studies explore the dynamics of these plant-pollinator interactions as a driver of species richness (Memtsas), where the objective is often community resilience to an external stressor. Such resiliance is usually correlated to the structure of specialists and generalists of both plants and pollinators within a community. Abundance of generalist pollinators is often high (Moeller) and advances the transfer of pollen between plants; however, some degree of specialisation is necessary for successful pollination for flowers requiring conspecific pollen (Brosi). This characteristic of community structure is usually defined as the level of nestedness - the tendency for specialists to interact with subsets of the species that generalists interact with. It is thought that a perfectly nested community is the most resilient (Brosi). Highly specialised systems like the fiscus trees and their wasp pollinators experience a trade-off between high reproductive success and low resilience, therefore experiencing a low level of nestedness. (Shanahan). 
 
-  We predict that Clarkia reproductive success will be greater in communities with less floral overlap and a more specialized pollinator community structure, due to reduced pollen interference and resource competition. These communities are predicted to be the least nested.Conversely, we predict that communities with more congeners to Clarkia will attract greater overall abundance of pollinators; however, reproductive success and pollinator biodiversity will be lower. These communities are predicted to be the most nested.
+Thus, our analysis targets this gap in more depth, by investigating the reproductive success as an output of nestedness. We aim to grow scienfitic understanding about the trade-off between resilience and reproductive success as it promotes community population persistence in different community assemblies. 
+
+Through deeper analysis of this existing literature, we can gain an understanding of current plant-pollinator network dynamics, where specialist pollinators are often found in greater abundance yet with lower diversity, and the inverse is true for generalist (@Moeller). These dynamics can also be understood as a metric of nestedness, which encompasses the specialisation of plants and pollinators as a vector of species richness, and therefore can add to our understanding of the drivers behind reproductive success in these plant-pollinator networks. Additionally, we know that plant species with similar flowering phenologies and floral morphologies may compete for pollination, consequently making pollinator effectiveness and occurrence a driver of reproductive success in communities with congeners (@Bell). There is also a wealth of research that outlines the two potential mechanisms of competition for pollination, as pollinator preference and improper pollen transfer, where the latter occurs when heterospecific pollen is deposited on stigmas of one or both competitors. Both of these mechanisms are important factors in plant-pollinator networks as they can be confounding on reproductive success, and limit the extent to which congeners can beneficially coexist (@Bell).
+
+Surveys of floral visitor communities across large geographic ranges to examine the network of pollinators and their contribution to community assembly are frequent and provide a strong framework for the methods of this study. Differently, the data for this project allows for the examination of pollination effectiveness at a smaller spatial scale, and focuses analysis in communities native to a defined ecoregion to enhance targeted restoration efforts. 
+
+Understanding research done by @Moeller @Brosi on the structure of specialisation in pollinator communities visiting focal plants across a wide geographic range is fundamental to the formation of our hypothesis. Building upon the understanding that the difference in pollinator communities between plant communities is due to the proportion of specialists versus generalists, rather than diversity, we form our first hypothesis:
+We predict that focal plant reproductive success will be greater in communities with less floral overlap and a more specialised pollinator community structure, due to reduced pollen interference and resource competition. These communities are predicted to be the least nested.
+Conversely, we predict that communities with more congeners to focal plants will attract greater overall abundance of pollinators; however, reproductive success and pollinator biodiversity will be lower. These communities are predicted to be the most nested.
 Therefore, the optimal, most nested plant assemblage for restoration will feature limited plant overlap but high pollinator sharing.
 
 #DATA CLEANING
@@ -117,7 +124,7 @@ GLTC_MADGRA <- read.csv("/Users/sydneyjames/OneDrive_UniversityofOregon/final_co
 GLTC_MADGRA <- subset(GLTC_MADGRA, 
                       select = -c(S, lostSeeds.O, Oflorets, lostSeeds.C, Cflorets, notesOpen, notesClosed, notesOther))        
 
-#removing mono plots
+## removing mono plots
 GLTC_MADGRA <- subset(GLTC_MADGRA, M != 0) 
 #changing ""  and 0 to NAs 
 GLTC_MADGRA[GLTC_MADGRA == ""| GLTC_MADGRA == 0] <- NA
@@ -132,7 +139,7 @@ GLTC_MADGRA <- GLTC_MADGRA %>%
           "Treatment" = genSpec,
           "PlantGenusSpecies" = Sp) 
 
-#making new seeds column 
+## making new seeds column 
 GLTC_MADGRA <- GLTC_MADGRA %>% 
   mutate(OSeeds = 
            ifelse((!is.na(OseedsGood) & OseedsGood >= 0) | (!is.na(Oseeds.Bad) & Oseeds.Bad >=0), rowSums(cbind(OseedsGood, Oseeds.Bad), na.rm = TRUE),
@@ -148,11 +155,11 @@ GLTC_MADGRA <- GLTC_MADGRA %>%
                          ifelse(!is.na(CseedsTotal), CseedsTotal,
                                 NA))))
 
-#dropping old seed columns
+##dropping old seed columns
 GLTC_MADGRA <- subset(GLTC_MADGRA, 
                       select = -c(OseedsGood, Oseeds.Bad, OseedsTotal, CseedsGood, CseedsBad, CseedsTotal))
 
-##Linear regression for seed mass:
+##Linear regression for seed mass to fill in empty seed values 
 ## FOR OPEN subset for data rows that have both total seeds and mass:
 OSeed_mass <- subset(GLTC_MADGRA, OSeeds !=0 & Omass != 0)
 ## linear reg:
@@ -185,19 +192,19 @@ cleaned_GLTC_MADGRA <- GLTC_MADGRA
 CnoSeeds_yesMass.small <- CnoSeeds_yesMass %>% select(Cmass, CSeeds)
 OnoSeeds_yesMass.small <- OnoSeeds_yesMass %>% select(Omass, OSeeds)
 
-# Join OSeeds values
+## Join OSeeds values
 cleaned_GLTC_MADGRA <- cleaned_GLTC_MADGRA %>%
   left_join(OnoSeeds_yesMass.small, by = "Omass", suffix = c("", ".new")) %>%
   mutate(OSeeds = ifelse(is.na(OSeeds), OSeeds.new, OSeeds)) %>%
   select(-OSeeds.new)
 
-# Join CSeeds values
+## Join CSeeds values
 cleaned_GLTC_MADGRA <- cleaned_GLTC_MADGRA %>%
   left_join(CnoSeeds_yesMass.small, by = "Cmass", suffix = c("", ".new")) %>%
   mutate(CSeeds = ifelse(is.na(CSeeds), CSeeds.new, CSeeds)) %>%
   select(-CSeeds.new)
 
-#adding seeds per bloom 
+## adding seeds per bloom 
 cleaned_GLTC_MADGRA <- cleaned_GLTC_MADGRA %>%
   mutate(OSeeds_Per_Bloom = OSeeds/Oblooms,
          CSeeds_Per_Bloom = CSeeds/Cblooms)
@@ -390,7 +397,7 @@ WWCOLLIGRA <- WWCOLLIGRA %>%
 #dropping old seed columns
 WWCOLLIGRA <- subset(WWCOLLIGRA, 
                       select = -c(OseedsGood, OseedsBad, CseedsGood, CseedsBad))
-##Linear regression for seed mass:
+##Linear regression for seed mass to fill in missing values 
 ## FOR OPEN subset for data rows that have both total seeds and mass:
 OSeed_mass <- subset(WWCOLLIGRA, OSeeds !=0 & Omass != 0)
 ## linear reg:
