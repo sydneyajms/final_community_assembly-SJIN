@@ -1,12 +1,13 @@
 ---
-title: "Analysis Joined"
-output: html_document
+title: "Analysis Sydney"
+output:
+  pdf_document: default
+  html_document: default
 date: "2025-11-23"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-install.packages("bipartite")
 ```
 
 
